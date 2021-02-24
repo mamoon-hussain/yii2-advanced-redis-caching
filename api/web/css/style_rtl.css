@@ -1,0 +1,41 @@
+/* 
+    Created on : April 25, 2019, 9:36:20 PM
+    Author     : Adnan Jouned <joun.adnan@gmail.com> 
+*/
+
+.detail-view th {
+	width: 25%;
+          font-family: 'Cairo', sans-serif;  
+
+}
+a, h3, button{
+  font-family: 'Cairo', sans-serif;  
+}
+
+.rtl caption, .rtl th {
+	text-align: center;
+}
+
+a:hover, a:focus {
+	color: #393939;
+	/* text-decoration: underline; */
+}
+
+.navbar h3{
+    padding-right:25px;
+      font-family: 'Cairo', sans-serif;  
+
+}
+
+.rgraph_domtext_wrapper span{
+          font-family: 'Cairo', sans-serif !important;
+}
+
+.rgraph_domtext_wrapper span {
+	font-size: 10px !important;
+}
+.big-home-buttons {
+
+    font-size: 15px;
+}
+

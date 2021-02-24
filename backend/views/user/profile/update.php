@@ -1,0 +1,80 @@
+<?php
+
+use webvimark\modules\UserManagement\models\User;
+use webvimark\modules\UserManagement\UserManagementModule;
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use webvimark\extensions\BootstrapSwitch\BootstrapSwitch;
+use yii\helpers\ArrayHelper;
+use common\models\Center;
+
+$this->title = t('Update Profile');
+/**
+ * @var yii\web\View $this
+ * @var webvimark\modules\UserManagement\models\User $model
+ * @var yii\bootstrap\ActiveForm $form
+ */
+?>
+
+<div class="user-form">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <?php $form = ActiveForm::begin([
+                'id'=>'user',
+//                'layout'=>'horizontal',
+                'validateOnBlur' => false,
+            ]); ?>
+
+
+
+
+            <?= $form->field($model, 'fname')->textInput(['maxlength' => 50, 'autocomplete'=>'off', 'autofocus'=>true]) ?>
+
+            <?= $form->field($model, 'lname')->textInput(['maxlength' => 50, 'autocomplete'=>'off', 'autofocus'=>true]) ?>
+
+
+            <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
+
+            <?php $form->field($model, 'lat')->textInput(['maxlength' => 255]) ?>
+
+
+
+
+
+            <?php $form->field($model, 'lng')->textInput(['maxlength' => 50, 'autocomplete'=>'off', 'autofocus'=>true]) ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <?php if ( $model->isNewRecord ): ?>
+                        <?= Html::submitButton(
+                            '<span class="glyphicon glyphicon-plus-sign"></span> ' . t('Create'),//t('all', 'Create'),
+                            ['class' => 'btn btn-success']
+                        ) ?>
+                    <?php else: ?>
+                        <?= Html::submitButton(
+                            '<span class="glyphicon glyphicon-ok"></span> ' . t('Save'),//t('all', 'Save'),
+                            ['class' => 'btn btn-primary']
+                        ) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <?php ActiveForm::end(); ?>
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,124 @@
+
+
+.checkbox-signed-in{
+    color: #ffffff;
+}
+.submit-class {
+    margin-top: 20px;
+}
+
+@media (min-width: 992px){
+    #mainNav .nav-link {
+        transition: none;
+        padding: 2rem 1rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+
+.recovery-password{
+    background-color: #64a19d;
+    color: #ffffff;
+}
+
+.detail-view{
+    color: #b0e0e6;
+}
+
+
+
+.select2-container--krajee .select2-results__option[aria-selected="true"]
+, .select2-container--krajee .select2-results__option[aria-selected]
+, .select2-container--krajee .select2-results__option--highlighted[aria-selected]{
+
+    font-size: 20px;
+}
+
+.cid-si3gh69yvp .mbr-section-title
+, .cid-si3MqNY046 .mbr-section-title{
+    color: #ffffff;
+}
+
+.col-lg-12 mx-auto{
+    margin-top: 30px;
+}
+
+.modal-dialog, .modal-content {
+    height: auto;
+}
+
+@media (min-width: 576px){
+    .modal-dialog {
+        max-width: 1000px;
+        margin: 1.75rem auto;
+    }
+}
+
+.mbr-fullscreen {
+    padding-top: 2rem;
+    padding-bottom: 0rem;
+    min-height: 30vh;
+}
+
+.mbr-section-title {
+    margin-top: 10%;
+}
+
+.demo {
+    opacity: 0.6;
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+    border: 1px solid #ddd;
+    -webkit-transition: .4s;
+    -o-transition: .4s;
+    transition: .4s;
+    margin-top: 15%;
+}
+
+.cid-si3AOTwsav img, .cid-si3AOTwsav .item-img {
+    height: auto;
+}
+
+.badge {
+    padding: .00em .2em;
+    font-weight: 500;
+}
+
+.btn-gray{
+    background-color: #5b5b5b !important;
+    border-color: #5b5b5b !important;
+}
+
+.cid-si3RehqZz6 .image-wrapper img {
+    height: 150px;
+    width: 70%;
+}
+
+.badge {
+    font-size: 95%;
+}
+
+
+.bg-image {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 500px;
+}
+
+/* Position text in the middle of the page/image */
+.bg-text {
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 90%;
+    text-align: center;
+}

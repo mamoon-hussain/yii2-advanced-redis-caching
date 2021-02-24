@@ -1,0 +1,121 @@
+
+.img-sm{
+    max-width: 75px;
+}
+
+.img_form{
+    height: 255px;
+    width: 215px;
+}
+
+.img_view{
+    max-width: 150px;
+}
+
+
+.modal-dialog{
+    background: white;
+}
+
+.bg-info, .bg-info>a {
+    color: #fff!important;
+}
+.bg-info {
+    background-color: #17a2b8!important;
+}
+.small-box {
+    border-radius: .25rem;
+    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+}
+.bg-info {
+    background-color: #17a2b8!important;
+}
+
+.small-box:hover {
+    text-decoration: none;
+}
+.bg-success, .bg-success>a {
+    color: #fff!important;
+}
+.bg-success {
+    background-color: #28a745!important;
+}
+.bg-warning, .bg-warning>a {
+    color: #1f2d3d!important;
+}
+.bg-warning {
+    background-color: #ffc107!important;
+}
+
+.bg-danger, .bg-danger>a {
+    color: #fff!important;
+}
+.bg-danger {
+    background-color: #dc3545!important;
+}
+
+.category-link
+{
+    color: white;
+}
+#map
+{
+    position:absolute
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #3c8dbc !important;
+    color: #fff;
+}
+
+.nav-link {
+    display: block;
+    padding: .5rem 1rem .5rem 0;
+}
+
+body{
+    font-family: serif !important;
+}
+
+.panel-default {
+    border-color: #ddd;
+}
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.modal-header {
+    display: -ms-flexbox;
+    display: initial;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+    border-top-right-radius: .3rem;
+    border-top-left-radius: .3rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.help-block-error, .help-block {
+    color: red;
+}
+
+
+

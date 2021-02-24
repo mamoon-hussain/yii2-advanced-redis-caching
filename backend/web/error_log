@@ -1,0 +1,4 @@
+[01-Feb-2021 08:24:55 Asia/Damascus] PHP Notice:  Trying to get property 'imageUrl' of non-object in /home/m0bor1dgim82/public_html/backend/views/layouts/main.php on line 121
+[01-Feb-2021 08:24:55 Asia/Damascus] PHP Notice:  Trying to get property 'fullname' of non-object in /home/m0bor1dgim82/public_html/backend/views/layouts/main.php on line 122
+[01-Feb-2021 08:24:56 Asia/Damascus] PHP Notice:  Trying to get property 'imageUrl' of non-object in /home/m0bor1dgim82/public_html/backend/views/layouts/main.php on line 121
+[01-Feb-2021 08:24:56 Asia/Damascus] PHP Notice:  Trying to get property 'fullname' of non-object in /home/m0bor1dgim82/public_html/backend/views/layouts/main.php on line 122

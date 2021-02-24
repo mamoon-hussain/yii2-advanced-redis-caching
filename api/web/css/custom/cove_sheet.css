@@ -1,0 +1,14 @@
+
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .p {
+        font-size: 14px !important;
+    }
+}
+
+.select2-results {
+    text-transform: uppercase;
+}

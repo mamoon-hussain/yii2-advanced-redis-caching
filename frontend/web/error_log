@@ -1,0 +1,96 @@
+[14-Jan-2021 17:19:25 Asia/Damascus] An Error occurred while handling another error:
+yii\base\InvalidConfigException: The table does not exist: {{%auth_item_group}} in /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/db/ActiveRecord.php:438
+Stack trace:
+#0 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/db/ActiveRecord.php(469): yii\db\ActiveRecord::getTableSchema()
+#1 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/db/BaseActiveRecord.php(500): yii\db\ActiveRecord->attributes()
+#2 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/db/BaseActiveRecord.php(315): yii\db\BaseActiveRecord->hasAttribute('code')
+#3 /home/m0bor1dgim82/public_html/common/modules/user-manage/webvimark/module-user-management/models/rbacDB/AuthItemGroup.php(23): yii\db\BaseActiveRecord->__set('code', 'site')
+#4 /home/m0bor1dgim82/public_html/common/utils/Controller.php(14): webvimark\modules\UserManagement\models\rbacDB\AuthItemGroup::create('site', 'Site')
+#5 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/base/Controller.php(179): common\utils\Controller->beforeAction(Object(yii\web\ErrorAction))
+#6 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/base/Module.php(534): yii\base\Controller->runAction('error', Array)
+#7 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/web/ErrorHandler.php(109): yii\base\Module->runAction('site/error')
+#8 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/base/ErrorHandler.php(135): yii\web\ErrorHandler->renderException(Object(yii\web\NotFoundHttpException))
+#9 [internal function]: yii\base\ErrorHandler->handleException(Object(yii\web\NotFoundHttpException))
+#10 {main}
+Previous exception:
+yii\base\InvalidRouteException: Unable to resolve the request "favicon.ico". in /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/base/Module.php:543
+Stack trace:
+#0 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/web/Application.php(104): yii\base\Module->runAction('favicon.ico', Array)
+#1 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/base/Application.php(392): yii\web\Application->handleRequest(Object(common\components\Request))
+#2 /home/m0bor1dgim82/public_html/frontend/web/index.php(18): yii\base\Application->run()
+#3 {main}
+
+Next yii\web\NotFoundHttpException: Page not found. in /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/web/Application.php:116
+Stack trace:
+#0 /home/m0bor1dgim82/public_html/vendor/yiisoft/yii2/base/Application.php(392): yii\web\Application->handleRequest(Object(common\components\Request))
+#1 /home/m0bor1dgim82/public_html/frontend/web/index.php(18): yii\base\Application->run()
+#2 {main}
+$_SERVER = [
+    'LSPHP_ENABLE_USER_INI' => 'on',
+    'PATH' => '/usr/local/bin:/usr/bin:/bin',
+    'TEMP' => '/tmp',
+    'TMP' => '/tmp',
+    'TMPDIR' => '/tmp',
+    'PWD' => '/',
+    'HTTP_ACCEPT' => 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br',
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.9,ar-EG;q=0.8,ar;q=0.7',
+    'CONTENT_LENGTH' => '0',
+    'HTTP_COOKIE' => 'pvisitor=28705812-a332-4542-a1e7-016731e47340; timezone=Asia/Damascus; cpsession=m0bor1dgim82%3abVfNH0WiV9ieQ4ic%2c83bd318a90c3efd7f8aa91e9d618984b; PHPFRONTSESSID=fd37f2b70c52fcb3c83fef2485d9bad9; _language=c6680ad38eb8d2592f08ef4d3f271df2f76e1c8cca56228ed5be09fab078d982a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_language%22%3Bi%3A1%3Bs%3A2%3A%22en%22%3B%7D',
+    'HTTP_HOST' => 'artzonakw.com',
+    'HTTP_REFERER' => 'https://artzonakw.com/en',
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
+    'HTTP_SEC_CH_UA' => '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
+    'HTTP_SEC_CH_UA_MOBILE' => '?0',
+    'HTTP_SEC_FETCH_SITE' => 'same-origin',
+    'HTTP_SEC_FETCH_MODE' => 'no-cors',
+    'HTTP_SEC_FETCH_DEST' => 'image',
+    'HTTP_X_HTTPS' => '1',
+    'REDIRECT_UNIQUE_ID' => 'YABg-X3B8McYBLJ8Ie0k@wAAQSM',
+    'REDIRECT_SCRIPT_URL' => '/en/favicon.ico',
+    'REDIRECT_SCRIPT_URI' => 'https://artzonakw.com/en/favicon.ico',
+    'REDIRECT_HTTPS' => 'on',
+    'REDIRECT_SSL_TLS_SNI' => 'artzonakw.com',
+    'REDIRECT_HTTP2' => 'on',
+    'REDIRECT_H2PUSH' => 'on',
+    'REDIRECT_H2_PUSH' => 'on',
+    'REDIRECT_H2_PUSHED' => '',
+    'REDIRECT_H2_PUSHED_ON' => '',
+    'REDIRECT_H2_STREAM_ID' => '7',
+    'REDIRECT_H2_STREAM_TAG' => '65-7',
+    'REDIRECT_STATUS' => '200',
+    'UNIQUE_ID' => 'YABg-X3B8McYBLJ8Ie0k@wAAQSM',
+    'SCRIPT_URL' => '/en/favicon.ico',
+    'SCRIPT_URI' => 'https://artzonakw.com/en/favicon.ico',
+    'HTTPS' => 'on',
+    'SSL_TLS_SNI' => 'artzonakw.com',
+    'HTTP2' => 'on',
+    'H2PUSH' => 'on',
+    'H2_PUSH' => 'on',
+    'H2_PUSHED' => '',
+    'H2_PUSHED_ON' => '',
+    'H2_STREAM_ID' => '7',
+    'H2_STREAM_TAG' => '65-7',
+    'SERVER_SIGNATURE' => '',
+    'SERVER_SOFTWARE' => 'Apache',
+    'SERVER_NAME' => 'artzonakw.com',
+    'SERVER_ADDR' => '92.204.222.232',
+    'SERVER_PORT' => '443',
+    'REMOTE_ADDR' => '193.124.173.153',
+    'DOCUMENT_ROOT' => '/home/m0bor1dgim82/public_html',
+    'REQUEST_SCHEME' => 'https',
+    'CONTEXT_PREFIX' => '',
+    'CONTEXT_DOCUMENT_ROOT' => '/home/m0bor1dgim82/public_html',
+    'SERVER_ADMIN' => 'webmaster@artzonakw.com',
+    'SCRIPT_FILENAME' => '/home/m0bor1dgim82/public_html/frontend/web/index.php',
+    'REMOTE_PORT' => '1181',
+    'REDIRECT_URL' => '/en/favicon.ico',
+    'SERVER_PROTOCOL' => 'HTTP/2.0',
+    'REQUEST_METHOD' => 'GET',
+    'QUERY_STRING' => '',
+    'REQUEST_URI' => '/en/favicon.ico',
+    'SCRIPT_NAME' => '/frontend/web/index.php',
+    'PHP_SELF' => '/frontend/web/index.php',
+    'REQUEST_TIME_FLOAT' => 1610637565.684023,
+    'REQUEST_TIME' => 1610637565,
+]

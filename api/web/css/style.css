@@ -1,0 +1,78 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 25, 2019, 9:36:20 PM
+    Author     : Adnan Jouned <joun.adnan@gmail.com> 
+*/
+
+.krajee-default .file-preview-image {
+
+    max-width: 315px;
+    max-height: 300px;
+}
+a:hover, a:focus {
+    color: #393939;
+    /* text-decoration: underline; */
+}
+
+
+
+.btn-danger_rejection{
+    background-color: #F19F09;
+}
+
+.rgraph_domtext_wrapper span {
+    font-size: 12px !important;
+}
+
+.canvas-orders-status{
+
+}
+
+.canvas-orders-status-container{
+    display: block;
+    margin: 10px auto;
+    width: 400px;
+}
+
+#\32 36_353_Assigned_to_Warehouse_orders_chart_full{
+    font-size: 9px !important;
+    max-width: 25px;
+    -ms-word-break: break-all;
+    word-break: break-all;
+
+    /* Non standard for WebKit */
+    word-break: break-word;
+
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.big-home-buttons {
+    padding: 35px 27px;
+    font-size: 21px;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 1s ease-out;
+    -o-transition: background-color 1s ease-out;
+    transition: background-color 1s ease-out;
+    border: 0px;
+    margin: 25px auto;
+    width:190px;
+    font-size: 17px;
+    display: block;   
+
+}
+
+
+
+.button-conatiner{
+    padding: 25px 10px;
+}
+
+a.big-home-buttons:hover > a.big-home-buttons i{
+    display: none;
+}
