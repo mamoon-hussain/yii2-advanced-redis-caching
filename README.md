@@ -55,13 +55,11 @@ Run the following command in the project root to install Yii2 and required packa
 
 ```bash
 composer install
+```
 
-If you get errors about missing packages like QR code generator, run:
+### 3. Create database
 
-composer require endroid/qr-code
-
-
-### 2. Create database
+```bash
 mysql -u root -p -e "CREATE DATABASE painter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
 
 # Import structure
@@ -69,8 +67,10 @@ mysql -u root -p painter < database/structure.sql
 
 # Import sample data (optional)
 mysql -u root -p painter < database/sample_data.sql
+```
 
 ### 3. Configure Static IP Address
+
 
 Update the file `config/params.php` with your machine’s local IP address so that the mobile devices on the same network can access your project:
 
@@ -82,6 +82,7 @@ return [
     'baseUrl' => 'http://192.168.0.68/url_qrcode/web',
     'baseIp' => '192.168.0.68',
 ];
+```
 
 ### 4. Run the Project
 
@@ -95,17 +96,5 @@ Or, to access it from another device on the same local network (e.g., your phone
 http://192.168.0.68/url_qrcode/web
 
 Make sure your firewall allows connections on port 80.
-
----
-
-### 5. Usage
-
-- Open the URL shortening page in your browser.
-- Enter a valid URL in the input form.
-- The system will:
-  - Check if the URL is reachable.
-  - If available and not already shortened, generate a short code and a QR code.
-- The page will display the shortened URL and the corresponding QR code.
-- You can use the short URL or scan the QR code to be redirected to the original URL.
 
 ---
