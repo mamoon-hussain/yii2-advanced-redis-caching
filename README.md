@@ -36,7 +36,7 @@ return [
     'password' => '',
     'charset' => 'utf8',
 ];
-
+```
 
 ---
 
@@ -44,9 +44,10 @@ return [
 
 ### 1. Clone project
 
-```bash
+```php
 git clone <repo-url>
 cd <project-folder>
+```
 
 ### 2. Install Dependencies
 
@@ -58,6 +59,7 @@ composer install
 If you get errors about missing packages like QR code generator, run:
 
 composer require endroid/qr-code
+
 
 ### 2. Create database
 mysql -u root -p -e "CREATE DATABASE painter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
