@@ -39,7 +39,7 @@ abstract class AbstractMetadataReader implements MetadataReaderInterface
      */
     public function readData($data, $originalResource = null)
     {
-        if (null !== $originalResource) {
+        if ($originalResource !== null) {
             return new MetadataBag(array_merge($this->getStreamMetadata($originalResource), $this->extractFromData($data)));
         }
 
@@ -100,7 +100,7 @@ abstract class AbstractMetadataReader implements MetadataReaderInterface
     /**
      * Extracts metadata from raw data.
      *
-     * @param $data
+     * @param string $data
      *
      * @return array An associative array of metadata
      */
@@ -109,7 +109,7 @@ abstract class AbstractMetadataReader implements MetadataReaderInterface
     /**
      * Extracts metadata from a stream.
      *
-     * @param $resource
+     * @param resource $resource
      *
      * @return array An associative array of metadata
      */

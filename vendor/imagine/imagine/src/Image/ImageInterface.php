@@ -33,6 +33,13 @@ interface ImageInterface extends ManipulatorInterface
     const RESOLUTION_PIXELSPERCENTIMETER = 'ppc';
 
     /**
+     * Multiplier for converting resolution from ppc to ppi.
+     *
+     * @var float
+     */
+    const RESOLUTION_PPC_TO_PPI_MULTIPLIER = 2.54;
+
+    /**
      * Image interlacing: none.
      *
      * @var string
@@ -173,6 +180,13 @@ interface ImageInterface extends ManipulatorInterface
     const FILTER_SINC = 'sinc';
 
     /**
+     * Resampling filter: sincfast.
+     *
+     * @var string
+     */
+    const FILTER_SINCFAST = 'sincfast';
+
+    /**
      * Returns the image content as a binary string.
      *
      * @param string $format
@@ -195,8 +209,9 @@ interface ImageInterface extends ManipulatorInterface
 
     /**
      * Instantiates and returns a DrawerInterface instance for image drawing.
+     * Some drivers may also return a DrawerInterface drawer that's also AlphaBlendingAwareDrawerInterface.
      *
-     * @return \Imagine\Draw\DrawerInterface
+     * @return \Imagine\Draw\DrawerInterface|\Imagine\Draw\AlphaBlendingAwareDrawerInterface
      */
     public function draw();
 

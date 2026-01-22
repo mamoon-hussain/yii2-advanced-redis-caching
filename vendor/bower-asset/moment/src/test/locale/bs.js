@@ -4,9 +4,10 @@ import moment from '../../moment';
 localeModule('bs');
 
 test('parse', function (assert) {
-    var tests = 'januar jan._februar feb._mart mar._april apr._maj maj._juni jun._juli jul._august aug._septembar sep._oktobar okt._novembar nov._decembar dec.'.split(
-            '_'
-        ),
+    var tests =
+            'januar jan._februar feb._mart mar._april apr._maj maj._juni jun._juli jul._august aug._septembar sep._oktobar okt._novembar nov._decembar dec.'.split(
+                '_'
+            ),
         i;
     function equalTest(input, mmm, i) {
         assert.equal(
@@ -118,9 +119,10 @@ test('format ordinal', function (assert) {
 });
 
 test('format month', function (assert) {
-    var expected = 'januar jan._februar feb._mart mar._april apr._maj maj._juni jun._juli jul._august aug._septembar sep._oktobar okt._novembar nov._decembar dec.'.split(
-            '_'
-        ),
+    var expected =
+            'januar jan._februar feb._mart mar._april apr._maj maj._juni jun._juli jul._august aug._septembar sep._oktobar okt._novembar nov._decembar dec.'.split(
+                '_'
+            ),
         i;
     for (i = 0; i < expected.length; i++) {
         assert.equal(
@@ -132,9 +134,10 @@ test('format month', function (assert) {
 });
 
 test('format week', function (assert) {
-    var expected = 'nedjelja ned. ne_ponedjeljak pon. po_utorak uto. ut_srijeda sri. sr_četvrtak čet. če_petak pet. pe_subota sub. su'.split(
-            '_'
-        ),
+    var expected =
+            'nedjelja ned. ne_ponedjeljak pon. po_utorak uto. ut_srijeda sri. sr_četvrtak čet. če_petak pet. pe_subota sub. su'.split(
+                '_'
+            ),
         i;
     for (i = 0; i < expected.length; i++) {
         assert.equal(
@@ -300,6 +303,11 @@ test('now from now', function (assert) {
         'prije par sekundi',
         'now from now should display as in the past'
     );
+    assert.equal(
+        moment().subtract({ h: 1 }).fromNow(),
+        'prije jedan sat',
+        '1 hour ago'
+    );
 });
 
 test('fromNow', function (assert) {
@@ -308,6 +316,12 @@ test('fromNow', function (assert) {
         'za par sekundi',
         'in a few seconds'
     );
+    assert.equal(
+        moment().add({ m: 1 }).fromNow(),
+        'za jednu minutu',
+        'in 1 minute'
+    );
+    assert.equal(moment().add({ h: 1 }).fromNow(), 'za jedan sat', 'in 1 hour');
     assert.equal(moment().add({ d: 5 }).fromNow(), 'za 5 dana', 'in 5 days');
 });
 

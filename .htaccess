@@ -1,0 +1,69 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+# deal with admin first
+RewriteCond %{REQUEST_URI} ^/artzonakw/(admin)
+RewriteRule ^admin/assets/(.*)$ backend/web/assets/$1 [L]
+RewriteRule ^admin/template/(.*)$ backend/web/template/$1 [L]
+RewriteRule ^admin/css/(.*)$ backend/web/css/$1 [L]
+RewriteRule ^admin/js/(.*)$ backend/web/js/$1 [L]
+RewriteRule ^admin/plugins/(.*)$ backend/web/plugins/$1 [L]
+RewriteRule ^admin/images/(.*)$ images/$1 [L]
+RewriteRule ^admin/public/(.*)$ public/$1 [L]
+RewriteRule ^admin/fonts/(.*)$ frontend/web/fonts/$1 [L]
+RewriteRule ^admin/layout_document/(.*)$ frontend/web/layout_document [L]
+RewriteRule ^admin/images/(.*)$ images/$1 [L]
+RewriteRule ^admin/bower_components/(.*)$ frontend/web/bower_components/$1 [L]
+RewriteRule ^admin/less/(.*)$ frontend/web/less/$1 [L]
+RewriteRule ^admin/font-awesome/(.*)$ backend/web/font-awesome/$1 [L]
+
+
+RewriteCond %{REQUEST_URI} !^/artzonakw/backend/web/(assets|css)/
+RewriteCond %{REQUEST_URI} ^/artzonakw/(admin)
+RewriteRule ^.*$ backend/web/index.php [L]
+
+# api
+RewriteCond %{REQUEST_URI} ^/artzonakw/(api)
+RewriteRule ^api/assets/(.*)$ api/web/assets/$1 [L]
+RewriteRule ^api/template/(.*)$ api/web/template/$1 [L]
+RewriteRule ^api/css/(.*)$ api/web/css/$1 [L]
+RewriteRule ^api/js/(.*)$ api/web/js/$1 [L]
+RewriteRule ^api/plugins/(.*)$ api/web/plugins/$1 [L]
+RewriteRule ^api/images/(.*)$ images/$1 [L]
+RewriteRule ^api/public/(.*)$ public/$1 [L]
+RewriteRule ^api/fonts/(.*)$ api/web/fonts/$1 [L]
+RewriteRule ^api/layout_document/(.*)$ api/web/layout_document [L]
+RewriteRule ^api/images/(.*)$ images/$1 [L]
+RewriteRule ^api/bower_components/(.*)$ api/web/bower_components/$1 [L]
+RewriteRule ^api/less/(.*)$ api/web/less/$1 [L]
+RewriteRule ^api/font-awesome/(.*)$ api/web/font-awesome/$1 [L]
+
+
+RewriteCond %{REQUEST_URI} !^/artzonakw/api/web/(assets|css)/
+RewriteCond %{REQUEST_URI} ^/artzonakw/(api)
+RewriteRule ^.*$ api/web/index.php [L]
+
+#frontend
+RewriteCond %{REQUEST_URI} ^/artzonakw/(assets|css|js|images|layout_document)
+RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L]
+RewriteRule ^css/(.*)$ frontend/web/css/$1 [L]
+RewriteRule ^js/(.*)$ frontend/web/js/$1 [L]
+RewriteRule ^fonts/(.*)$ frontend/web/fonts/$1 [L]
+RewriteRule ^layout_document/(.*)$ frontend/web/layout_document [L]
+RewriteRule ^images/(.*)$ images/$1 [L]
+RewriteRule ^public/(.*)$ public/$1 [L]
+RewriteRule ^plugins/(.*)$ frontend/web/plugins/$1 [L]
+RewriteRule ^bower_components/(.*)$ frontend/web/bower_components/$1 [L]
+RewriteRule ^less/(.*)$ frontend/web/less/$1 [L]
+RewriteRule ^font-awesome/(.*)$ frontend/web/font-awesome/$1 [L]
+RewriteRule ^front/(.*)$ frontend/web/front/$1 [L]
+RewriteRule ^template/(.*)$ frontend/web/template/$1 [L]
+
+
+RewriteCond %{REQUEST_URI} !^/artzonakw/(frontend|backend)/web/(assets|css)/
+RewriteCond %{REQUEST_URI} !index.php
+RewriteCond %{REQUEST_FILENAME} !-f [OR]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ frontend/web/index.php
+
+

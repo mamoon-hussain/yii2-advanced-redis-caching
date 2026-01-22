@@ -11,29 +11,20 @@ use frontend\models\user\forms\ChangeOwnPasswordForm;
 use frontend\models\user\forms\PasswordRecoveryForm;
 use webvimark\modules\UserManagement\models\forms\ConfirmMobileForm;
 use Cassandra\Type\UserType;
-use common\enums\AdminType;
 use common\enums\Constents;
-use common\enums\JoinRequestStatus;
 use common\models\User;
-use common\services\AdminService;
 use common\models\Admin;
-use common\models\TeachersRequests;
 use common\services\UserService;
 use frontend\models\RegistrationForm;
 use webvimark\modules\UserManagement\components\UserAuthEvent;
 use webvimark\modules\UserManagement\libs\LibAdmin;
-use webvimark\modules\UserManagement\libs\LibUser;
 use webvimark\modules\UserManagement\models\forms\AdminLoginForm;
 use webvimark\modules\UserManagement\models\forms\LoginForm;
-use webvimark\modules\UserManagement\models\forms\ZRegistrationForm;
-use webvimark\modules\UserManagement\models\rbacDB\Role;
-use webvimark\modules\UserManagement\models\ZAdmin;
-use webvimark\modules\UserManagement\models\ZUser;
-use webvimark\modules\UserManagement\UserManagementModule;
 use Yii;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 class AuthController extends \webvimark\modules\UserManagement\controllers\AuthController {
 
@@ -41,11 +32,12 @@ class AuthController extends \webvimark\modules\UserManagement\controllers\AuthC
     public function actionLogin() {
         $this->layout = '//main';
 
+        $post = Yii::$app->request->post();
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $base = \yii\helpers\Url::base();
+        $base = Url::base();
 
         if (strpos($base, 'admin') !== false) {
             $model = new AdminLoginForm();
@@ -53,12 +45,14 @@ class AuthController extends \webvimark\modules\UserManagement\controllers\AuthC
             $model = new LoginForm();
         }
 
-        if (Yii::$app->request->isAjax AND $model->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isAjax AND $model->load($post)) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
 
-        if ($model->load(Yii::$app->request->post()) AND $model->login()) {
+//        stopv($model->login() );
+
+        if ($model->load($post) AND $model->login()) {
             return $this->goBack();
         }
 

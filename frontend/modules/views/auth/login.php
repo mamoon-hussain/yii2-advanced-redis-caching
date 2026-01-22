@@ -55,24 +55,24 @@ $this->title = t(Yii::$app->params['title']);
                         <?php
 
 
-                        echo $form->field($model, 'phone', [
-                            'template' => '
+//                        echo $form->field($model, 'phone', [
+//                            'template' => '
+//
+//                <div class="form-group">
+//                {input}
+//                </div>
+//                {error}'])->widget(PhoneInput::className(), [
+//                            'jsOptions' => [
+//                                'preferredCountries' => ['kw'],
+//                                    'excludeCountries' => ['il'],
+////                    'preferredCountries' => ['no', 'pl', 'ua'],
+////                                'onlyCountries' => ['iq',],
+//                            ]
+//                        ]);
 
-                <div class="form-group">
-                {input}
-                </div>
-                {error}'])->widget(PhoneInput::className(), [
-                            'jsOptions' => [
-                                'preferredCountries' => ['kw'],
-                                    'excludeCountries' => ['il'],
-//                    'preferredCountries' => ['no', 'pl', 'ua'],
-//                                'onlyCountries' => ['iq',],
-                            ]
-                        ]);
 
-
-//                       echo $form->field($model, 'phone')
-//                            ->textInput(['placeholder' => $model->getAttributeLabel('phone'), 'autocomplete' => 'off'])
+                       echo $form->field($model, 'email')
+                            ->textInput(['placeholder' => $model->getAttributeLabel('email'), 'autocomplete' => 'off'])
                         ?>
 
                         <?=
@@ -113,10 +113,3 @@ $this->title = t(Yii::$app->params['title']);
 
     </div>
 </div>
-<style>
-    .iti {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-</style>

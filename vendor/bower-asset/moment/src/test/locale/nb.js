@@ -4,9 +4,10 @@ import moment from '../../moment';
 localeModule('nb');
 
 test('parse', function (assert) {
-    var tests = 'januar jan._februar feb._mars mars_april apr._mai mai_juni juni_juli juli_august aug._september sep._oktober okt._november nov._desember des.'.split(
-            '_'
-        ),
+    var tests =
+            'januar jan._februar feb._mars mars_april apr._mai mai_juni juni_juli juli_august aug._september sep._oktober okt._november nov._desember des.'.split(
+                '_'
+            ),
         i;
 
     function equalTest(input, mmm, i) {
@@ -119,9 +120,10 @@ test('format ordinal', function (assert) {
 });
 
 test('format month', function (assert) {
-    var expected = 'januar jan._februar feb._mars mars_april apr._mai mai_juni juni_juli juli_august aug._september sep._oktober okt._november nov._desember des.'.split(
-            '_'
-        ),
+    var expected =
+            'januar jan._februar feb._mars mars_april apr._mai mai_juni juni_juli juli_august aug._september sep._oktober okt._november nov._desember des.'.split(
+                '_'
+            ),
         i;
     for (i = 0; i < expected.length; i++) {
         assert.equal(
@@ -133,9 +135,10 @@ test('format month', function (assert) {
 });
 
 test('format week', function (assert) {
-    var expected = 'søndag sø. sø_mandag ma. ma_tirsdag ti. ti_onsdag on. on_torsdag to. to_fredag fr. fr_lørdag lø. lø'.split(
-            '_'
-        ),
+    var expected =
+            'søndag sø. sø_mandag ma. ma_tirsdag ti. ti_onsdag on. on_torsdag to. to_fredag fr. fr_lørdag lø. lø'.split(
+                '_'
+            ),
         i;
     for (i = 0; i < expected.length; i++) {
         assert.equal(
@@ -175,12 +178,12 @@ test('from', function (assert) {
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ m: 45 }), true),
-        'en time',
+        'én time',
         '45 minutes = an hour'
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ m: 89 }), true),
-        'en time',
+        'én time',
         '89 minutes = an hour'
     );
     assert.equal(
@@ -200,12 +203,12 @@ test('from', function (assert) {
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ h: 22 }), true),
-        'en dag',
+        'én dag',
         '22 hours = a day'
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ h: 35 }), true),
-        'en dag',
+        'én dag',
         '35 hours = a day'
     );
     assert.equal(
@@ -215,7 +218,7 @@ test('from', function (assert) {
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ d: 1 }), true),
-        'en dag',
+        'én dag',
         '1 day = a day'
     );
     assert.equal(
@@ -230,17 +233,17 @@ test('from', function (assert) {
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ d: 26 }), true),
-        'en måned',
+        'én måned',
         '26 days = a month'
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ d: 30 }), true),
-        'en måned',
+        'én måned',
         '30 days = a month'
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ d: 43 }), true),
-        'en måned',
+        'én måned',
         '43 days = a month'
     );
     assert.equal(
@@ -260,7 +263,7 @@ test('from', function (assert) {
     );
     assert.equal(
         start.from(moment([2007, 1, 28]).add({ M: 1 }), true),
-        'en måned',
+        'én måned',
         '1 month = a month'
     );
     assert.equal(

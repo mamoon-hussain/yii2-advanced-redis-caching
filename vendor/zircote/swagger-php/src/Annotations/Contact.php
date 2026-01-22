@@ -6,11 +6,14 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
- * @Annotation
- * A "Contact Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#contact-object
- *
  * Contact information for the exposed API.
+ *
+ * @see [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
+ *
+ * @Annotation
  */
 class Contact extends AbstractAnnotation
 {
@@ -19,21 +22,21 @@ class Contact extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = UNDEFINED;
+    public $name = Generator::UNDEFINED;
 
     /**
      * The URL pointing to the contact information.
      *
      * @var string
      */
-    public $url = UNDEFINED;
+    public $url = Generator::UNDEFINED;
 
     /**
      * The email address of the contact person/organization.
      *
      * @var string
      */
-    public $email = UNDEFINED;
+    public $email = Generator::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -41,13 +44,20 @@ class Contact extends AbstractAnnotation
     public static $_types = [
         'name' => 'string',
         'url' => 'string',
-        'email' => 'string'
+        'email' => 'string',
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Info'
+        Info::class,
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
     ];
 }

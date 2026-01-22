@@ -17,9 +17,6 @@ return array_merge_recursive(
     'timeZone' => 'Asia/Damascus',
     'name' => 'Painter',
     'components' => [
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
         'i18n' => [
             'translations' => [
                 'api*' => [
@@ -63,11 +60,33 @@ return array_merge_recursive(
                 ],
             ],
         ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=YOUR_DATABASE_NAME',
+            'username' => 'YOUR_USERNAME',
+            'password' => 'YOUR_PASSWORD',
+            'charset' => 'utf8',
+            'on afterOpen' => function($event) {
+                // $event->sender refers to the DB connection
+                $event->sender->createCommand("SET SQL_BIG_SELECTS = 1")->execute();
+            }
+        ],
+
+        'cache' => [
+            'class' => 'yii\redis\Cache',
+            'redis' => 'redis',
+        ],
         'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => 'localhost',
             'port' => 6379,
             'database' => 0,
+        ],
+//        'cache' => [
+//            'class' => 'yii\caching\FileCache',
+//        ],
+        'session' => [
+            'class' => 'yii\redis\Session',
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',

@@ -164,113 +164,113 @@ if (Yii::$app->language == "en") {
                         </a>
                     </li>
 
-                    <?php if (Admin::hasGroupPermission('product')
-                    ) { ?>
-                        <li class="nav-item has-treeview <?php
-                        if ($liinActive == 'painting' || $liinActive == 'tool') {
-                            echo ' menu-open';
-                        }
-                        ?>">
-                            <a href="#" style="padding-right: 3%;" class="nav-link <?php
-                            if ($liActive == 'product') {
-                                echo ' active';
-                            }
-                            ?>">
-                                <i class="nav-icon fa fa-product-hunt"></i>
-                                <p>
-                                    <?= t('Products') ?>
-                                    <i class="fa fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <?php if (Admin::hasPermission('painting_index')) { ?>
-                                    <li class="nav-item">
-                                        <a href="<?= Yii::$app->urlManager->createUrl("/product/index?t=".PaintingToolType::painting) ?>" class="nav-link <?php
-                                        if ($liinActive == 'painting') {
-                                            echo 'active';
-                                        }
-                                        ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p><?= t('Paintings') ?></p>
-                                        </a>
-                                    </li>
-                                <?php } ?>
-                                <?php if (Admin::hasPermission('tool_index')) { ?>
-                                    <li class="nav-item">
-                                        <a href="<?= Yii::$app->urlManager->createUrl("/product/index?t=".PaintingToolType::tool) ?>" class="nav-link <?php
-                                        if ($liinActive == 'tool') {
-                                            echo 'active';
-                                        }
-                                        ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p><?= t('Tools') ?></p>
-                                        </a>
-                                    </li>
-                                <?php } ?>
-                            </ul>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasGroupPermission('product')
+//                    ) { ?>
+<!--                        <li class="nav-item has-treeview --><?php
+//                        if ($liinActive == 'painting' || $liinActive == 'tool') {
+//                            echo ' menu-open';
+//                        }
+//                        ?><!--">-->
+<!--                            <a href="#" style="padding-right: 3%;" class="nav-link --><?php
+//                            if ($liActive == 'product') {
+//                                echo ' active';
+//                            }
+//                            ?><!--">-->
+<!--                                <i class="nav-icon fa fa-product-hunt"></i>-->
+<!--                                <p>-->
+<!--                                    --><?php //= t('Products') ?>
+<!--                                    <i class="fa fa-angle-left right"></i>-->
+<!--                                </p>-->
+<!--                            </a>-->
+<!--                            <ul class="nav nav-treeview">-->
+<!--                                --><?php //if (Admin::hasPermission('painting_index')) { ?>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a href="--><?php //= Yii::$app->urlManager->createUrl("/product/index?t=".PaintingToolType::painting) ?><!--" class="nav-link --><?php
+//                                        if ($liinActive == 'painting') {
+//                                            echo 'active';
+//                                        }
+//                                        ?><!--">-->
+<!--                                            <i class="far fa-circle nav-icon"></i>-->
+<!--                                            <p>--><?php //= t('Paintings') ?><!--</p>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                --><?php //} ?>
+<!--                                --><?php //if (Admin::hasPermission('tool_index')) { ?>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a href="--><?php //= Yii::$app->urlManager->createUrl("/product/index?t=".PaintingToolType::tool) ?><!--" class="nav-link --><?php
+//                                        if ($liinActive == 'tool') {
+//                                            echo 'active';
+//                                        }
+//                                        ?><!--">-->
+<!--                                            <i class="far fa-circle nav-icon"></i>-->
+<!--                                            <p>--><?php //= t('Tools') ?><!--</p>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                --><?php //} ?>
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
 
 
-                    <?php if (Admin::hasGroupPermission('place')
-                    ) { ?>
-                        <li class="nav-item has-treeview <?php
-                        if ($liinActive == 'course' || $liinActive == 'hall' || $liinActive == 'package' ) {
-                            echo ' menu-open';
-                        }
-                        ?>">
-                            <a href="#" style="padding-right: 3%;" class="nav-link <?php
-                            if ($liActive == 'places and tickets') {
-                                echo ' active';
-                            }
-                            ?>">
-                                <i class="nav-icon fa fa-building"></i>
-                                <p>
-                                    <?= t('Places and Tickets') ?>
-                                    <i class="fa fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <?php if (Admin::hasPermission('course_index')) { ?>
-                                    <li class="nav-item">
-                                        <a href="<?= Yii::$app->urlManager->createUrl("/place/index?t=".PlaceType::course) ?>" class="nav-link <?php
-                                        if ($liinActive == 'course') {
-                                            echo 'active';
-                                        }
-                                        ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p><?= t('Courses') ?></p>
-                                        </a>
-                                    </li>
-                                <?php } ?>
-                                <?php if (Admin::hasPermission('hall_index')) { ?>
-                                    <li class="nav-item">
-                                        <a href="<?= Yii::$app->urlManager->createUrl("/place/index?t=".PlaceType::hall) ?>" class="nav-link <?php
-                                        if ($liinActive == 'hall') {
-                                            echo 'active';
-                                        }
-                                        ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p><?= t('Art Classes') ?></p>
-                                        </a>
-                                    </li>
-                                <?php } ?>
-                                <?php if (Admin::hasPermission('package_index')) { ?>
-                                    <li class="nav-item">
-                                        <a href="<?= Yii::$app->urlManager->createUrl("/place/index?t=".PlaceType::package) ?>" class="nav-link <?php
-                                        if ($liinActive == 'package') {
-                                            echo 'active';
-                                        }
-                                        ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p><?= t('Art Tables') ?></p>
-                                        </a>
-                                    </li>
-                                <?php } ?>
-                            </ul>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasGroupPermission('place')
+//                    ) { ?>
+<!--                        <li class="nav-item has-treeview --><?php
+//                        if ($liinActive == 'course' || $liinActive == 'hall' || $liinActive == 'package' ) {
+//                            echo ' menu-open';
+//                        }
+//                        ?><!--">-->
+<!--                            <a href="#" style="padding-right: 3%;" class="nav-link --><?php
+//                            if ($liActive == 'places and tickets') {
+//                                echo ' active';
+//                            }
+//                            ?><!--">-->
+<!--                                <i class="nav-icon fa fa-building"></i>-->
+<!--                                <p>-->
+<!--                                    --><?php //= t('Places and Tickets') ?>
+<!--                                    <i class="fa fa-angle-left right"></i>-->
+<!--                                </p>-->
+<!--                            </a>-->
+<!--                            <ul class="nav nav-treeview">-->
+<!--                                --><?php //if (Admin::hasPermission('course_index')) { ?>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a href="--><?php //= Yii::$app->urlManager->createUrl("/place/index?t=".PlaceType::course) ?><!--" class="nav-link --><?php
+//                                        if ($liinActive == 'course') {
+//                                            echo 'active';
+//                                        }
+//                                        ?><!--">-->
+<!--                                            <i class="far fa-circle nav-icon"></i>-->
+<!--                                            <p>--><?php //= t('Courses') ?><!--</p>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                --><?php //} ?>
+<!--                                --><?php //if (Admin::hasPermission('hall_index')) { ?>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a href="--><?php //= Yii::$app->urlManager->createUrl("/place/index?t=".PlaceType::hall) ?><!--" class="nav-link --><?php
+//                                        if ($liinActive == 'hall') {
+//                                            echo 'active';
+//                                        }
+//                                        ?><!--">-->
+<!--                                            <i class="far fa-circle nav-icon"></i>-->
+<!--                                            <p>--><?php //= t('Art Classes') ?><!--</p>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                --><?php //} ?>
+<!--                                --><?php //if (Admin::hasPermission('package_index')) { ?>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a href="--><?php //= Yii::$app->urlManager->createUrl("/place/index?t=".PlaceType::package) ?><!--" class="nav-link --><?php
+//                                        if ($liinActive == 'package') {
+//                                            echo 'active';
+//                                        }
+//                                        ?><!--">-->
+<!--                                            <i class="far fa-circle nav-icon"></i>-->
+<!--                                            <p>--><?php //= t('Art Tables') ?><!--</p>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                --><?php //} ?>
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
                     <?php if (Admin::hasGroupPermission('category')) { ?>
                         <li class="nav-item <?php
@@ -288,6 +288,41 @@ if (Yii::$app->language == "en") {
                             </a>
                         </li>
                     <?php } ?>
+
+
+                    <?php if (Admin::hasGroupPermission('post')) { ?>
+                        <li class="nav-item <?php
+                        if ($liActive == 'post') {
+                            echo 'active';
+                        }
+                        ?>">
+                            <a class="nav-link <?php
+                            if ($liActive == 'post') {
+                                echo 'active';
+                            }
+                            ?>" href="<?= Yii::$app->urlManager->createUrl("/post/index") ?>">
+                                <i class="fa fa-tags"></i> <span><?= t('Posts') ?></span>
+                                <span class="pull-right-container"></span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+<!--                    --><?php //if (Admin::hasGroupPermission('comment')) { ?>
+<!--                        <li class="nav-item --><?php
+//                        if ($liActive == 'comment') {
+//                            echo 'active';
+//                        }
+//                        ?><!--">-->
+<!--                            <a class="nav-link --><?php
+//                            if ($liActive == 'comment') {
+//                                echo 'active';
+//                            }
+//                            ?><!--" href="--><?php //= Yii::$app->urlManager->createUrl("/comment/index") ?><!--">-->
+<!--                                <i class="fa fa-tags"></i> <span>--><?php //= t('Comments') ?><!--</span>-->
+<!--                                <span class="pull-right-container"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
                     <?php if (false && Admin::hasGroupPermission('common-question')) { ?>
                         <li class="nav-item <?php
@@ -307,56 +342,56 @@ if (Yii::$app->language == "en") {
                     <?php } ?>
 
 
-                    <?php if (Admin::hasGroupPermission('app-info')) { ?>
-                        <li class="nav-item <?php
-                        if ($liActive == 'app-info') {
-                            echo 'active';
-                        }
-                        ?>">
-                            <a class="nav-link <?php
-                            if ($liActive == 'app-info') {
-                                echo 'active';
-                            }
-                            ?>" href="<?= Yii::$app->urlManager->createUrl("/app-info") ?>">
-                                <i class="fa fa-cogs"></i> <span><?= t('App Info') ?></span>
-                                <span class="pull-right-container"></span>
-                            </a>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasGroupPermission('app-info')) { ?>
+<!--                        <li class="nav-item --><?php
+//                        if ($liActive == 'app-info') {
+//                            echo 'active';
+//                        }
+//                        ?><!--">-->
+<!--                            <a class="nav-link --><?php
+//                            if ($liActive == 'app-info') {
+//                                echo 'active';
+//                            }
+//                            ?><!--" href="--><?php //= Yii::$app->urlManager->createUrl("/app-info") ?><!--">-->
+<!--                                <i class="fa fa-cogs"></i> <span>--><?php //= t('App Info') ?><!--</span>-->
+<!--                                <span class="pull-right-container"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
-                    <?php if (Admin::hasGroupPermission('terms')) { ?>
-                        <li class="nav-item <?php
-                        if ($liActive == 'terms') {
-                            echo 'active';
-                        }
-                        ?>">
-                            <a class="nav-link <?php
-                            if ($liActive == 'terms') {
-                                echo 'active';
-                            }
-                            ?>" href="<?= Yii::$app->urlManager->createUrl("/terms") ?>">
-                                <i class="fa fa-cogs"></i> <span><?= t('Terms & Conditions') ?></span>
-                                <span class="pull-right-container"></span>
-                            </a>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasGroupPermission('terms')) { ?>
+<!--                        <li class="nav-item --><?php
+//                        if ($liActive == 'terms') {
+//                            echo 'active';
+//                        }
+//                        ?><!--">-->
+<!--                            <a class="nav-link --><?php
+//                            if ($liActive == 'terms') {
+//                                echo 'active';
+//                            }
+//                            ?><!--" href="--><?php //= Yii::$app->urlManager->createUrl("/terms") ?><!--">-->
+<!--                                <i class="fa fa-cogs"></i> <span>--><?php //= t('Terms & Conditions') ?><!--</span>-->
+<!--                                <span class="pull-right-container"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
-                    <?php if (Admin::hasGroupPermission('request')) { ?>
-                        <li class="nav-item <?php
-                        if ($liActive == 'request') {
-                            echo 'active';
-                        }
-                        ?>">
-                            <a class="nav-link <?php
-                            if ($liActive == 'request') {
-                                echo 'active';
-                            }
-                            ?>" href="<?= Yii::$app->urlManager->createUrl("/request") ?>">
-                                <i class="fa fa-hourglass-start"></i> <span><?= t('Requests') ?></span>
-                                <span class="pull-right-container"></span>
-                            </a>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasGroupPermission('request')) { ?>
+<!--                        <li class="nav-item --><?php
+//                        if ($liActive == 'request') {
+//                            echo 'active';
+//                        }
+//                        ?><!--">-->
+<!--                            <a class="nav-link --><?php
+//                            if ($liActive == 'request') {
+//                                echo 'active';
+//                            }
+//                            ?><!--" href="--><?php //= Yii::$app->urlManager->createUrl("/request") ?><!--">-->
+<!--                                <i class="fa fa-hourglass-start"></i> <span>--><?php //= t('Requests') ?><!--</span>-->
+<!--                                <span class="pull-right-container"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
                     <?php if (false && Admin::hasGroupPermission('admin')) { ?>
                         <li class="nav-item has-treeview <?php
@@ -404,39 +439,39 @@ if (Yii::$app->language == "en") {
                         </li>
                     <?php } ?>
 
-                    <?php if (Admin::hasPermission('contact-us_index')) { ?>
-                        <li class="nav-item <?php
-                        if ($liActive == 'contact-us') {
-                            echo 'active';
-                        }
-                        ?>">
-                            <a class="nav-link <?php
-                            if ($liActive == 'contact-us') {
-                                echo 'active';
-                            }
-                            ?>" href="<?= Yii::$app->urlManager->createUrl("/contact-us") ?>">
-                                <i class="fa fa-support"></i> <span><?= t('Contact Us Requests') ?></span>
-                                <span class="pull-right-container"></span>
-                            </a>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasPermission('contact-us_index')) { ?>
+<!--                        <li class="nav-item --><?php
+//                        if ($liActive == 'contact-us') {
+//                            echo 'active';
+//                        }
+//                        ?><!--">-->
+<!--                            <a class="nav-link --><?php
+//                            if ($liActive == 'contact-us') {
+//                                echo 'active';
+//                            }
+//                            ?><!--" href="--><?php //= Yii::$app->urlManager->createUrl("/contact-us") ?><!--">-->
+<!--                                <i class="fa fa-support"></i> <span>--><?php //= t('Contact Us Requests') ?><!--</span>-->
+<!--                                <span class="pull-right-container"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
-                    <?php if (Admin::hasPermission('site_confirmation-codes')) { ?>
-                        <li class="nav-item <?php
-                        if ($liActive == 'confirmation-codes') {
-                            echo 'active';
-                        }
-                        ?>">
-                            <a class="nav-link <?php
-                            if ($liActive == 'confirmation-codes') {
-                                echo 'active';
-                            }
-                            ?>" href="<?= Yii::$app->urlManager->createUrl("/site/confirmation-codes") ?>">
-                                <i class="fa fa-code"></i> <span><?= t('Confirmation Codes') ?></span>
-                                <span class="pull-right-container"></span>
-                            </a>
-                        </li>
-                    <?php } ?>
+<!--                    --><?php //if (Admin::hasPermission('site_confirmation-codes')) { ?>
+<!--                        <li class="nav-item --><?php
+//                        if ($liActive == 'confirmation-codes') {
+//                            echo 'active';
+//                        }
+//                        ?><!--">-->
+<!--                            <a class="nav-link --><?php
+//                            if ($liActive == 'confirmation-codes') {
+//                                echo 'active';
+//                            }
+//                            ?><!--" href="--><?php //= Yii::$app->urlManager->createUrl("/site/confirmation-codes") ?><!--">-->
+<!--                                <i class="fa fa-code"></i> <span>--><?php //= t('Confirmation Codes') ?><!--</span>-->
+<!--                                <span class="pull-right-container"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
 
                 </ul>
             </nav>

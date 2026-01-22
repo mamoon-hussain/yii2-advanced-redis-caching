@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\grid;
@@ -24,7 +24,7 @@ use yii\widgets\BaseListView;
  *
  * A basic usage looks like the following:
  *
- * ```php
+ * ```
  * <?= GridView::widget([
  *     'dataProvider' => $dataProvider,
  *     'columns' => [
@@ -48,10 +48,9 @@ use yii\widgets\BaseListView;
  */
 class GridView extends BaseListView
 {
-    const FILTER_POS_HEADER = 'header';
-    const FILTER_POS_FOOTER = 'footer';
-    const FILTER_POS_BODY = 'body';
-
+    public const FILTER_POS_HEADER = 'header';
+    public const FILTER_POS_FOOTER = 'footer';
+    public const FILTER_POS_BODY = 'body';
     /**
      * @var string the default data column class if the class name is not explicitly specified when configuring a data column.
      * Defaults to 'yii\grid\DataColumn'.
@@ -95,7 +94,7 @@ class GridView extends BaseListView
      * returns an array of the HTML attributes. The anonymous function will be called once for every
      * data model returned by [[dataProvider]]. It should have the following signature:
      *
-     * ```php
+     * ```
      * function ($model, $key, $index, $grid)
      * ```
      *
@@ -137,7 +136,7 @@ class GridView extends BaseListView
      */
     public $showOnEmpty = true;
     /**
-     * @var array|Formatter the formatter used to format model attribute values into displayable texts.
+     * @var array|Formatter|null the formatter used to format model attribute values into displayable texts.
      * This can be either an instance of [[Formatter]] or an configuration array for creating the [[Formatter]]
      * instance. If this property is not set, the "formatter" application component will be used.
      */
@@ -146,16 +145,16 @@ class GridView extends BaseListView
      * @var array grid column configuration. Each array element represents the configuration
      * for one particular grid column. For example,
      *
-     * ```php
+     * ```
      * [
-     *     ['class' => SerialColumn::className()],
+     *     ['class' => SerialColumn::class],
      *     [
-     *         'class' => DataColumn::className(), // this line is optional
+     *         'class' => DataColumn::class, // this line is optional
      *         'attribute' => 'name',
      *         'format' => 'text',
      *         'label' => 'Name',
      *     ],
-     *     ['class' => CheckboxColumn::className()],
+     *     ['class' => CheckboxColumn::class],
      * ]
      * ```
      *
@@ -169,7 +168,7 @@ class GridView extends BaseListView
      *
      * Using the shortcut format the configuration for columns in simple cases would look like this:
      *
-     * ```php
+     * ```
      * [
      *     'id',
      *     'amount:currency:Total Amount',
@@ -180,7 +179,7 @@ class GridView extends BaseListView
      * When using a [[dataProvider]] with active records, you can also display values from related records,
      * e.g. the `name` attribute of the `author` relation:
      *
-     * ```php
+     * ```
      * // shortcut syntax
      * 'author.name',
      * // full syntax
@@ -202,7 +201,7 @@ class GridView extends BaseListView
      */
     public $emptyCell = '&nbsp;';
     /**
-     * @var \yii\base\Model the model that keeps the user-entered filter data. When this property is set,
+     * @var \yii\base\Model|null the model that keeps the user-entered filter data. When this property is set,
      * the grid view will enable column-based filtering. Each data column by default will display a text field
      * at the top that users can fill in to filter the data.
      *
@@ -214,7 +213,7 @@ class GridView extends BaseListView
      */
     public $filterModel;
     /**
-     * @var string|array the URL for returning the filtering result. [[Url::to()]] will be called to
+     * @var string|array|null the URL for returning the filtering result. [[Url::to()]] will be called to
      * normalize the URL. If not set, the current controller action will be used.
      * When the user makes change to any filter input, the current filtering inputs will be appended
      * as GET parameters to this URL.
@@ -359,7 +358,7 @@ class GridView extends BaseListView
 
         $tableFooter = false;
         $tableFooterAfterBody = false;
-        
+
         if ($this->showFooter) {
             if ($this->placeFooterAfterBody) {
                 $tableFooterAfterBody = $this->renderTableFooter();
@@ -400,7 +399,7 @@ class GridView extends BaseListView
     public function renderColumnGroup()
     {
         foreach ($this->columns as $column) {
-            /* @var $column Column */
+            /** @var Column $column */
             if (!empty($column->options)) {
                 $cols = [];
                 foreach ($this->columns as $col) {
@@ -422,7 +421,7 @@ class GridView extends BaseListView
     {
         $cells = [];
         foreach ($this->columns as $column) {
-            /* @var $column Column */
+            /** @var Column $column */
             $cells[] = $column->renderHeaderCell();
         }
         $content = Html::tag('tr', implode('', $cells), $this->headerRowOptions);
@@ -443,7 +442,7 @@ class GridView extends BaseListView
     {
         $cells = [];
         foreach ($this->columns as $column) {
-            /* @var $column Column */
+            /** @var Column $column */
             $cells[] = $column->renderFooterCell();
         }
         $content = Html::tag('tr', implode('', $cells), $this->footerRowOptions);
@@ -463,7 +462,7 @@ class GridView extends BaseListView
         if ($this->filterModel !== null) {
             $cells = [];
             foreach ($this->columns as $column) {
-                /* @var $column Column */
+                /** @var Column $column */
                 $cells[] = $column->renderFilterCell();
             }
 
@@ -520,7 +519,7 @@ class GridView extends BaseListView
     public function renderTableRow($model, $key, $index)
     {
         $cells = [];
-        /* @var $column Column */
+        /** @var Column $column */
         foreach ($this->columns as $column) {
             $cells[] = $column->renderDataCell($model, $key, $index);
         }

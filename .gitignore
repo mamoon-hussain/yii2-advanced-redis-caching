@@ -1,0 +1,48 @@
+# Yii2 Advanced Template .gitignore
+# Runtime directories
+backend/runtime/*
+frontend/runtime/*
+console/runtime/*
+common/runtime/*
+
+# Assets cache
+backend/web/assets/*
+frontend/web/assets/*
+
+# Environment files (CRITICAL!)
+environments/*
+!environments/index.php
+!environments/.gitignore
+
+# Composer
+vendor/
+composer.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Configuration files with credentials (protect these!)
+common/config/main-local.php
+common/config/params-local.php
+backend/config/main-local.php
+backend/config/params-local.php
+frontend/config/main-local.php
+frontend/config/params-local.php
+console/config/main-local.php
+console/config/params-local.php
+
+# Note: If you use main-local.php for overrides, but if you don't,
+# your main credentials are in db.php and main.php so we need example files
+common/config/db.php.example
+common/config/main.php.example
+
+# Uploads (if any)
+backend/web/uploads/*
+frontend/web/uploads/*

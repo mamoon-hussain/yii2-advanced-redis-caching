@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\base;
@@ -19,11 +19,16 @@ namespace yii\base;
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
+ *
+ * @template T of Component
  */
 class Behavior extends BaseObject
 {
     /**
      * @var Component|null the owner of this behavior
+     *
+     * @phpstan-var T|null
+     * @psalm-var T|null
      */
     public $owner;
 
@@ -52,7 +57,7 @@ class Behavior extends BaseObject
      *
      * The following is an example:
      *
-     * ```php
+     * ```
      * [
      *     Model::EVENT_BEFORE_VALIDATE => 'myBeforeValidate',
      *     Model::EVENT_AFTER_VALIDATE => 'myAfterValidate',
@@ -72,6 +77,9 @@ class Behavior extends BaseObject
      * and attach event handlers as declared in [[events]].
      * Make sure you call the parent implementation if you override this method.
      * @param Component $owner the component that this behavior is to be attached to.
+     *
+     * @phpstan-param T $owner
+     * @psalm-param T $owner
      */
     public function attach($owner)
     {

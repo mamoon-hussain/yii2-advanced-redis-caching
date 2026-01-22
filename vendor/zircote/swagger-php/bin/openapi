@@ -1,27 +1,45 @@
 #!/usr/bin/env php
 <?php
-use OpenApi\Logger;
-use OpenApi\Analysis;
-use const OpenApi\UNDEFINED;
-use const OpenApi\COLOR_RED;
-use const OpenApi\COLOR_YELLOW;
-use const OpenApi\COLOR_STOP;
+
+use OpenApi\Analysers\AttributeAnnotationFactory;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
+use OpenApi\Analysers\ReflectionAnalyser;
+use OpenApi\Analysers\TokenAnalyser;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Generator;
+use OpenApi\Util;
+use OpenApi\Loggers\ConsoleLogger;
+
+if (class_exists(Generator::class) === false) {
+    if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
+        require_once(__DIR__.'/../vendor/autoload.php');
+    } else {
+        require_once(realpath(__DIR__.'/../../../').'/autoload.php');
+    }
+}
 
 error_reporting(E_ALL);
-// Possible options and their default values.
 
+// Possible options and their default values.
 $options = [
+    'config' => [],
+    'legacy' => false,
     'output' => false,
     'format' => 'auto',
     'exclude' => [],
-    'bootstrap' => false,
+    'pattern' => '*.php',
+    'bootstrap' => [],
     'help' => false,
     'debug' => false,
     'processor' => [],
+    'version' => null,
 ];
 $aliases = [
+    'c' => 'config',
+    'l' => 'legacy',
     'o' => 'output',
     'e' => 'exclude',
+    'n' => 'pattern',
     'b' => 'bootstrap',
     'h' => 'help',
     'd' => 'debug',
@@ -29,17 +47,17 @@ $aliases = [
     'f' => 'format'
 ];
 $needsArgument = [
+    'config',
     'output',
     'format',
     'exclude',
+    'pattern',
     'bootstrap',
     'processor',
+    'version',
 ];
 $paths = [];
 $error = false;
-define('OpenApi\COLOR_RED', "\033[31m");
-define('OpenApi\COLOR_YELLOW', "\033[33m");
-define('OpenApi\COLOR_STOP', "\033[0m");
 
 try {
     // Parse cli arguments
@@ -74,55 +92,67 @@ try {
             $options[$option] = true;
         }
     }
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $error = $e->getMessage();
 }
 
+$logger = new ConsoleLogger($options['debug']);
+
 if (!$error && $options['bootstrap']) {
-    if (is_readable($options['bootstrap']) === false) {
-        $error = 'Invalid `--bootstrap` value: "'.$options['bootstrap'].'"';
-    } else {
-        require_once($options['bootstrap']);
+    foreach ($options['bootstrap'] as $bootstrap) {
+        $filenames = glob($bootstrap);
+        if (false === $filenames) {
+            $error = 'Invalid `--bootstrap` value: "' . $bootstrap . '"';
+            break;
+        }
+        foreach ($filenames as $filename) {
+            if ($options['debug']) {
+                $logger->debug('Bootstrapping: ' . $filename);
+            }
+            require_once($filename);
+        }
     }
 }
 if (count($paths) === 0) {
     $error = 'Specify at least one path.';
 }
+
 if ($options['help'] === false && $error) {
-    error_log('');
-    error_log(COLOR_RED.'Error: '.$error.COLOR_STOP);
-    $options['help'] = true; // Show help
+    $logger->error('', ['prefix' => '']);
+    $logger->error($error);
+    // Show help
+    $options['help'] = true;
 }
+$defaultVersion = OpenApi::DEFAULT_VERSION;
 if ($options['help']) {
     $help = <<<EOF
 
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
+  --config (-c)     Generator config
+                    ex: -c operationId.hash=false
+  --legacy (-l)     Use legacy TokenAnalyser; default is the new ReflectionAnalyser
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
   --exclude (-e)    Exclude path(s).
                     ex: --exclude vendor,library/Zend
-  --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
+  --pattern (-n)    Pattern of files to scan.
+                    ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
+  --bootstrap (-b)  Bootstrap php file(s) for defining constants, etc.
                     ex: --bootstrap config/constants.php
-  --processor       Register an additional processor.
-  --format          Force yaml or json.
-  --debug           Show additional error information.
+  --processor (-p)  Register an additional processor.
+  --format (-f)     Force yaml or json.
+  --debug (-d)      Show additional error information.
+  --version         The OpenAPI version; defaults to {$defaultVersion}.
   --help (-h)       Display this help message.
 
 
 EOF;
-    error_log($help);
+    $logger->info($help);
     exit(1);
 }
 
-if (class_exists(Logger::class) === false) {
-    if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
-        require_once(__DIR__.'/../vendor/autoload.php');
-    } else {
-        require_once(realpath(__DIR__.'/../../../').'/autoload.php');
-    }
-}
 $errorTypes = [
     E_ERROR => 'Error',
     E_WARNING => 'Warning',
@@ -140,76 +170,48 @@ $errorTypes = [
     E_USER_NOTICE => 'Notice',
     E_USER_DEPRECATED => 'Deprecated',
 ];
-set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $options) {
+set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $options, $logger) {
     if (!(error_reporting() & $errno)) {
-        return; // This error code is not included in error_reporting
+        // This error code is not included in error_reporting
+        return;
     }
     $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'Error';
-    $color = (substr($type, 0, 5) === 'Error') ? COLOR_RED: COLOR_YELLOW;
-    error_log(COLOR_RED.$type. ': '.$errstr.COLOR_STOP);
+    if ($type === 'Deprecated') {
+        $logger->info($errstr, ['prefix' => $type . ': ']);
+    } else {
+        $logger->error($errstr, ['prefix' => $type . ': ']);
+    }
+
     if ($options['debug']) {
-        error_log(' in '.$file.' on line '.$line);
+        $logger->info(' in '.$file.' on line '.$line);
     }
     if (substr($type, 0, 5) === 'Error') {
         exit($errno);
     }
 });
-set_exception_handler(function ($exception) use ($options) {
-    if ($options['debug']) {
-        error_log($exception);
-    } else {
-        error_log(COLOR_RED.'Exception: '.$exception->getMessage().COLOR_STOP);
-        // if ($options['debug']) {
-        //     error_log(' in '.$exception->getFile().' on line '.$exception->getLine());
-        // }
-    }
+
+set_exception_handler(function ($exception) use ($logger) {
+    $logger->error($exception);
     exit($exception->getCode() ?: 1);
 });
-$exit = 0;
-Logger::getInstance()->log = function ($entry, $type) use ($options, &$exit) {
-    $exit = 1;
-    if ($type === E_USER_NOTICE) {
-        $type = '';
-        $color = COLOR_YELLOW;
-    } else {
-        $type = 'Warning: ';
-        $color = COLOR_RED;
-    }
-    if ($entry instanceof Exception) {
-        error_log(COLOR_RED."Error: " . $entry->getMessage().COLOR_STOP);
-        if ($options['debug']) {
-            error_log('Stack trace:'.PHP_EOL.$entry->getTraceAsString());
-        }
-    } else {
-        error_log($color. $type . $entry.COLOR_STOP);
-        if ($options['debug']) {
-            // Show backtrace in debug mode
-            $e = (string)(new Exception('trace'));
-            $trace = explode("\n", substr($e, strpos($e, 'Stack trace:')));
-            foreach ($trace as $i => $entry) {
-                if ($i === 0) {
-                    error_log($entry);
-                }
-                if ($i <= 3) {
-                    continue;
-                }
-                preg_match('/#([0-9]+) (.*)$/', $entry, $match);
-                error_log('#' .($match[1] - 2).' '.$match[2]);
-            }
-        }
-    }
-};
+
 $exclude = null;
 if ($options['exclude']) {
     $exclude = $options['exclude'];
     if (strpos($exclude[0], ',') !== false) {
         $exploded = explode(',', $exclude[0]);
-        error_log(COLOR_RED.'Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude '.$exploded[0].' --exclude '.$exploded[1]).COLOR_STOP;
+        $logger->error('Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude '.$exploded[0].' --exclude '.$exploded[1]);
         $exclude[0] = array_shift($exploded);
         $exclude = array_merge($exclude, $exploded);
     }
 }
 
+$pattern = "*.php";
+if ($options['pattern']) {
+    $pattern = $options['pattern'];
+}
+
+$generator = new Generator($logger);
 foreach ($options["processor"] as $processor) {
     $class = '\OpenApi\Processors\\'.$processor;
     if (class_exists($class)) {
@@ -217,14 +219,19 @@ foreach ($options["processor"] as $processor) {
     } elseif (class_exists($processor)) {
         $processor = new $processor();
     }
-    Analysis::registerProcessor($processor);
+    $generator->getProcessorPipeline()->add($processor);
 }
 
-$openapi = OpenApi\scan($paths, ['exclude' => $exclude]);
+$analyser = $options['legacy']
+    ? new TokenAnalyser()
+    : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
 
-if ($exit !== 0) {
-    error_log('');
-}
+$openapi = $generator
+    ->setVersion($options['version'])
+    ->setConfig($options['config'])
+    ->setAnalyser($analyser)
+    ->generate(Util::finder($paths, $exclude, $pattern));
+
 if ($options['output'] === false) {
     if (strtolower($options['format']) === 'json') {
         echo $openapi->toJson();
@@ -238,4 +245,4 @@ if ($options['output'] === false) {
     }
     $openapi->saveAs($options['output'], $options['format']);
 }
-exit($exit);
+exit($logger->loggedMessageAboveNotice() ? 1 : 0);

@@ -6,25 +6,17 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Annotations as OA;
+
 /**
- * @Annotation
  * Shorthand for a json response.
  *
- * Use as an Schema inside a Response and the MediaType "application/json" will be generated.
+ * Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/json'` will be generated.
+ *
+ * @Annotation
  */
 class JsonContent extends Schema
 {
-
-    /**
-     * @var object
-     */
-    public $example = UNDEFINED;
-
-    /**
-     * @var object
-     */
-    public $examples = UNDEFINED;
-
     /**
      * @inheritdoc
      */
@@ -34,9 +26,12 @@ class JsonContent extends Schema
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Items' => 'items',
-        'OpenApi\Annotations\Property' => ['properties', 'property'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Xml' => 'xml',
+        Discriminator::class => 'discriminator',
+        Items::class => 'items',
+        Property::class => ['properties', 'property'],
+        ExternalDocumentation::class => 'externalDocs',
+        AdditionalProperties::class => 'additionalProperties',
+        Examples::class => ['examples', 'example'],
+        Attachable::class => ['attachables'],
     ];
 }

@@ -115,12 +115,6 @@ class UrlManager extends BaseUrlManager
     public $ignoreLanguageUrlPatterns = [];
 
     /**
-     * @var string the language that was initially set in the application
-     * configuration
-     */
-    protected $_defaultLanguage;
-
-    /**
      * @inheritdoc
      */
     public $enablePrettyUrl = true;
@@ -154,6 +148,17 @@ class UrlManager extends BaseUrlManager
      * ~~~
      */
     public $geoIpLanguageCountries = [];
+
+    /**
+     * @var int the HTTP status code. Default is 302.
+     */
+    public $languageRedirectCode = 302;
+
+    /**
+     * @var string the language that was initially set in the application
+     * configuration
+     */
+    protected $_defaultLanguage;
 
     /**
      * @var \yii\web\Request
@@ -612,8 +617,7 @@ class UrlManager extends BaseUrlManager
             $params[$this->languageParam] = $language;
         }
         // See Yii Issues #8291 and #9161:
-        $params = $params + $this->_request->getQueryParams();
-        array_unshift($params, $route);
+        $params = [$route] + $params + $this->_request->getQueryParams();
         $url = $this->createUrl($params);
         // Required to prevent double slashes on generated URLs
         if ($this->suffix === '/' && $route === '' && count($params) === 1) {
@@ -625,7 +629,7 @@ class UrlManager extends BaseUrlManager
             return;
         }
         Yii::trace("Redirecting to $url.", __METHOD__);
-        Yii::$app->getResponse()->redirect($url);
+        Yii::$app->getResponse()->redirect($url, $this->languageRedirectCode);
         if (YII2_LOCALEURLS_TEST) {
             // Response::redirect($url) above will call `Url::to()` internally.
             // So to really test for the same final redirect URL here, we need

@@ -53,12 +53,12 @@
     "davidhirtz/yii2-timeago": "*",
     "php-ffmpeg/php-ffmpeg": "^0.16.0",
     "kotchuprik/yii2-sortable-widgets": "*",
-    "greenhost/backjob": "master-dev",
     "2amigos/yii2-tinymce-widget" : "~1.1",
     "kartik-v/yii2-grid": "@dev",
     "borales/yii2-phone-input": "*",
 	"philippfrenzel/yii2fullcalendar":"*",
-	"bower-asset/fullcalendar": "3.5.1"
+	"bower-asset/fullcalendar": "3.5.1",
+    "yiisoft/yii2-redis": "^2.1"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "^2.0.0",
@@ -80,7 +80,10 @@
     "optimize-autoloader": true,
 	"fxp-asset": {
          "enable": true
-  }
+  },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
   },
   "repositories": [
     {

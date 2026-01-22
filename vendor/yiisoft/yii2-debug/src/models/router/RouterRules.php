@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\debug\models\router;
@@ -95,7 +95,7 @@ class RouterRules extends Model
                     case WebUrlRule::CREATION_ONLY:
                         $mode = 'creation only';
                         break;
-                    case null;
+                    case null:
                         $mode = null;
                         break;
                     default:

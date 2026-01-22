@@ -6,10 +6,12 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
- * @Annotation
+ * @see [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject).
  *
- * A "Tag Object":  https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject
+ * @Annotation
  */
 class Tag extends AbstractAnnotation
 {
@@ -18,21 +20,21 @@ class Tag extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = UNDEFINED;
+    public $name = Generator::UNDEFINED;
 
     /**
      * A short description for the tag. GFM syntax can be used for rich text representation.
      *
      * @var string
      */
-    public $description = UNDEFINED;
+    public $description = Generator::UNDEFINED;
 
     /**
      * Additional external documentation for this tag.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs = UNDEFINED;
+    public $externalDocs = Generator::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -51,13 +53,14 @@ class Tag extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi'
+        OpenApi::class,
     ];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs'
+        ExternalDocumentation::class => 'externalDocs',
+        Attachable::class => ['attachables'],
     ];
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\base;
@@ -17,6 +17,9 @@ namespace yii\base;
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
+ *
+ * @phpstan-property array<array-key, mixed> $data
+ * @psalm-property array<array-key, mixed> $data
  */
 trait ArrayAccessTrait
 {
@@ -25,7 +28,11 @@ trait ArrayAccessTrait
      * This method is required by the SPL interface [[\IteratorAggregate]].
      * It will be implicitly called when you use `foreach` to traverse the collection.
      * @return \ArrayIterator an iterator for traversing the cookies in the collection.
+     *
+     * @phpstan-return \ArrayIterator<array-key, mixed>
+     * @psalm-return \ArrayIterator<array-key, mixed>
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->data);
@@ -36,6 +43,7 @@ trait ArrayAccessTrait
      * This method is required by Countable interface.
      * @return int number of data elements.
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->data);
@@ -43,9 +51,10 @@ trait ArrayAccessTrait
 
     /**
      * This method is required by the interface [[\ArrayAccess]].
-     * @param mixed $offset the offset to check on
+     * @param int|string $offset the offset to check on
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->data[$offset]);
@@ -53,9 +62,10 @@ trait ArrayAccessTrait
 
     /**
      * This method is required by the interface [[\ArrayAccess]].
-     * @param int $offset the offset to retrieve element.
+     * @param int|string $offset the offset to retrieve element.
      * @return mixed the element at the offset, null if no element is found at the offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->data[$offset]) ? $this->data[$offset] : null;
@@ -63,9 +73,10 @@ trait ArrayAccessTrait
 
     /**
      * This method is required by the interface [[\ArrayAccess]].
-     * @param int $offset the offset to set element
+     * @param int|string $offset the offset to set element
      * @param mixed $item the element value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $item)
     {
         $this->data[$offset] = $item;
@@ -73,8 +84,9 @@ trait ArrayAccessTrait
 
     /**
      * This method is required by the interface [[\ArrayAccess]].
-     * @param mixed $offset the offset to unset element
+     * @param int|string $offset the offset to unset element
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->data[$offset]);

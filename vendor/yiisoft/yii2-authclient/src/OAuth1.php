@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\authclient;
@@ -155,7 +155,7 @@ abstract class OAuth1 extends BaseOAuth
             }
         }
 
-        if (strcmp($requestToken->getToken(), $oauthToken) !== 0) {
+        if (!Yii::$app->getSecurity()->compareString($requestToken->getToken(), $oauthToken)) {
             throw new HttpException(400, 'Invalid auth state parameter.');
         }
 
@@ -252,7 +252,7 @@ abstract class OAuth1 extends BaseOAuth
      */
     protected function generateNonce()
     {
-        return md5(microtime() . mt_rand());
+        return md5(microtime() . random_int(0, PHP_INT_MAX));
     }
 
     /**

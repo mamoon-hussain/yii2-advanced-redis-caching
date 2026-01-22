@@ -1,5 +1,54 @@
 # CHANGELOG
 
+### 1.5.2 (2026-01-09)
+- Do not call curl_close on PHP 8.0+ (#875, @dmaicher)
+
+### 1.5.1 (2025-12-09)
+- Don't call imagedestroy on PHP 8.5+ (#873, @mlocati)
+
+### 1.5.0 (2024-12-03)
+- Minimum supported PHP version raised from 5.5 to 7.1 (#865, @alexander-schranz)
+- Fix PHP 8.4 deprecation warnings (#865, @alexander-schranz)
+- The GD driver now supports resolution for PHP >= 7.2 (#813, #866, @gutocf, @mlocati)
+
+### 1.4.0 (2024-11-10)
+- If a file couldn't be found, we now throw a NotFoundException exception (#853, @playmono)
+- Add support for webp_lossless to GD and GMagick (#858, @ausi)
+- Use streams in ExifMetadataReader (#861, @ausi)
+- WebP format now supports animation (#812, @Yoann-TYT)
+
+### 1.3.5 (2023-06-07)
+* Fix PHP 8.2 warnings with Point class (#847, @anovsiradj)
+
+### 1.3.4 (2023-04-17)
+* Let PHP automatically detect the preferred TLS version (#841, @radli)
+* Add @return phpdoc to ReturnTypeWillChange methods (#846, @mlocati)
+
+### 1.3.3 (2022-11-16)
+* Fix invalid format MIME type definition (#835, @xdanik)
+
+### 1.3.2 (2022-04-01)
+* Workaround for a bug in PHP 7.3+opcache that causes segmentation faults (#826, #829, #828, @ausi, @mnocon, @mlocati)
+
+### 1.3.1 (2022-03-15)
+* Fix undefined variable $engineRawVersion in Imagick/Gmagick DriverInfo (#825, @fxbt)
+
+### 1.3.0 (2022-03-15)
+* Minimum PHP supported version is now 5.5 (#820, @PowerKiKi)
+* Support AVIF, HEIC, and JXL in Imagick driver (#759, #765, @ausi)
+* Support AVIF in GD driver (#791, @mlocati)
+* Make the $filter parameter of the resize method invariant (#776, @mlocati)
+* Ability to specify the alpha-blending of the GD drawer (#790, @mlocati)
+* Add support for SINCFAST filter in Imagick driver (#823, @mlocati)
+* Fix applyMask() for GD driver (#708, @ninze)
+* Fix PHP 8.1 compatibility (#768, #791, @ausi, @mlocati)
+* Fix error handling in grayscale() for Gmagick driver (#757, @dmitry-kulikov)
+* Fix convolve() for Imagick driver (#775, @mlocati)
+* Fix array retuned by histogram() method of GD and Imagick drivers (#797, @mlocati)
+* Fix handling alpha channel in Imagick (#775, #798, @mlocati)
+* New Driver\Info classes to inspect installed drivers (#802, #805, #806, @mlocati)
+* Fix wrong load logic in Imagick (#807, @mlocati)
+
 ### 1.2.4 (2020-11-03)
 * Fix PHP 8.0 compatibility, except gmagick - see  https://bugs.php.net/bug.php?id=80106 (#740, @ausi)
 * Optimize reading EXIF metadata from local files (#741, @jorrit)

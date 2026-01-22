@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\widgets;
@@ -30,13 +30,12 @@ class ActiveForm extends Widget
      * Add validation state class to container tag
      * @since 2.0.14
      */
-    const VALIDATION_STATE_ON_CONTAINER = 'container';
+    public const VALIDATION_STATE_ON_CONTAINER = 'container';
     /**
      * Add validation state class to input tag
      * @since 2.0.14
      */
-    const VALIDATION_STATE_ON_INPUT = 'input';
-
+    public const VALIDATION_STATE_ON_INPUT = 'input';
     /**
      * @var array|string the form action URL. This parameter will be processed by [[\yii\helpers\Url::to()]].
      * @see method for specifying the HTTP method for this form.
@@ -50,7 +49,7 @@ class ActiveForm extends Widget
      * will add new parameters instead of replacing existing ones.
      * You may set [[action]] explicitly to avoid this:
      *
-     * ```php
+     * ```
      * $form = ActiveForm::begin([
      *     'method' => 'get',
      *     'action' => ['controller/action'],
@@ -73,7 +72,7 @@ class ActiveForm extends Widget
      * This can be either a configuration array or an anonymous function returning a configuration array.
      * If the latter, the signature should be as follows:
      *
-     * ```php
+     * ```
      * function ($model, $attribute)
      * ```
      *
@@ -133,7 +132,7 @@ class ActiveForm extends Widget
      */
     public $enableClientScript = true;
     /**
-     * @var array|string the URL for performing AJAX-based validation. This property will be processed by
+     * @var array|string|null the URL for performing AJAX-based validation. This property will be processed by
      * [[Url::to()]]. Please refer to [[Url::to()]] for more details on how to configure this property.
      * If this property is not set, it will take the value of the form's action attribute.
      */
@@ -377,7 +376,7 @@ class ActiveForm extends Widget
      * For example, you may use the following code in a controller action to respond
      * to an AJAX validation request:
      *
-     * ```php
+     * ```
      * $model = new Post;
      * $model->load(Yii::$app->request->post());
      * if (Yii::$app->request->isAjax) {
@@ -390,7 +389,7 @@ class ActiveForm extends Widget
      * To validate multiple models, simply pass each model as a parameter to this method, like
      * the following:
      *
-     * ```php
+     * ```
      * ActiveForm::validate($model1, $model2, ...);
      * ```
      *
@@ -403,6 +402,9 @@ class ActiveForm extends Widget
      * as a model.
      *
      * @return array the error message array indexed by the attribute IDs.
+     *
+     * @phpstan-return array<string,array<string>>
+     * @psalm-return array<string,array<string>>
      */
     public static function validate($model, $attributes = null)
     {
@@ -414,7 +416,7 @@ class ActiveForm extends Widget
         } else {
             $models = [$model];
         }
-        /* @var $model Model */
+        /** @var Model $model */
         foreach ($models as $model) {
             $model->validate($attributes);
             foreach ($model->getErrors() as $attribute => $errors) {
@@ -432,7 +434,7 @@ class ActiveForm extends Widget
      * For example, you may use the following code in a controller action to respond
      * to an AJAX validation request:
      *
-     * ```php
+     * ```
      * // ... load $models ...
      * if (Yii::$app->request->isAjax) {
      *     Yii::$app->response->format = Response::FORMAT_JSON;
@@ -450,7 +452,7 @@ class ActiveForm extends Widget
     public static function validateMultiple($models, $attributes = null)
     {
         $result = [];
-        /* @var $model Model */
+        /** @var Model $model */
         foreach ($models as $i => $model) {
             $model->validate($attributes);
             foreach ($model->getErrors() as $attribute => $errors) {

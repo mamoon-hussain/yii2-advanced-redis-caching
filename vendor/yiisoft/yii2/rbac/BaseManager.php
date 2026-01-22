@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\rbac;
@@ -17,10 +17,9 @@ use yii\base\InvalidValueException;
  *
  * For more details and usage information on DbManager, see the [guide article on security authorization](guide:security-authorization).
  *
- * @property-read Role[] $defaultRoleInstances Default roles. The array is indexed by the role names. This
- * property is read-only.
+ * @property-read Role[] $defaultRoleInstances Default roles. The array is indexed by the role names.
  * @property string[] $defaultRoles Default roles. Note that the type of this property differs in getter and
- * setter. See [[getDefaultRoles()]]  and [[setDefaultRoles()]] for details.
+ * setter. See [[getDefaultRoles()]] and [[setDefaultRoles()]] for details.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -37,7 +36,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     /**
      * Returns the named auth item.
      * @param string $name the auth item name.
-     * @return Item the auth item corresponding to the specified name. Null is returned if no such item.
+     * @return Item|null the auth item corresponding to the specified name. Null is returned if no such item.
      */
     abstract protected function getItem($name);
 
@@ -45,6 +44,12 @@ abstract class BaseManager extends Component implements ManagerInterface
      * Returns the items of the specified type.
      * @param int $type the auth item type (either [[Item::TYPE_ROLE]] or [[Item::TYPE_PERMISSION]]
      * @return Item[] the auth items of the specified type.
+     *
+     * @phpstan-param Item::TYPE_ROLE|Item::TYPE_PERMISSION $type
+     * @psalm-param Item::TYPE_ROLE|Item::TYPE_PERMISSION $type
+     *
+     * @phpstan-return ($type is Item::TYPE_ROLE ? Role[] : Permission[])
+     * @psalm-return ($type is Item::TYPE_ROLE ? Role[] : Permission[])
      */
     abstract protected function getItems($type);
 
@@ -178,7 +183,12 @@ abstract class BaseManager extends Component implements ManagerInterface
     public function getRole($name)
     {
         $item = $this->getItem($name);
-        return $item instanceof Item && $item->type == Item::TYPE_ROLE ? $item : null;
+        if ($item instanceof Item && $item->type == Item::TYPE_ROLE) {
+            /** @var Role $item */
+            return $item;
+        }
+
+        return null;
     }
 
     /**
@@ -187,7 +197,12 @@ abstract class BaseManager extends Component implements ManagerInterface
     public function getPermission($name)
     {
         $item = $this->getItem($name);
-        return $item instanceof Item && $item->type == Item::TYPE_PERMISSION ? $item : null;
+        if ($item instanceof Item && $item->type == Item::TYPE_PERMISSION) {
+            /** @var Permission $item */
+            return $item;
+        }
+
+        return null;
     }
 
     /**

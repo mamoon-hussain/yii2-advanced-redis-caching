@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\base;
@@ -28,7 +28,7 @@ use yii\helpers\StringHelper;
  *
  * To attach an event handler to an event, call [[on()]]:
  *
- * ```php
+ * ```
  * $post->on('update', function ($event) {
  *     // send email notification
  * });
@@ -44,7 +44,7 @@ use yii\helpers\StringHelper;
  *
  * The signature of an event handler should be like the following:
  *
- * ```php
+ * ```
  * function foo($event)
  * ```
  *
@@ -53,7 +53,7 @@ use yii\helpers\StringHelper;
  * You can also attach a handler to an event when configuring a component with a configuration array.
  * The syntax is like the following:
  *
- * ```php
+ * ```
  * [
  *     'on add' => function ($event) { ... }
  * ]
@@ -64,7 +64,7 @@ use yii\helpers\StringHelper;
  * Sometimes, you may want to associate extra data with an event handler when you attach it to an event
  * and then access it when the handler is invoked. You may do so by
  *
- * ```php
+ * ```
  * $post->on('update', function ($event) {
  *     // the data can be accessed via $event->data
  * }, $data);
@@ -80,7 +80,7 @@ use yii\helpers\StringHelper;
  * One can also attach a behavior to a component when configuring it with a configuration array. The syntax is like the
  * following:
  *
- * ```php
+ * ```
  * [
  *     'as tree' => [
  *         'class' => 'Tree',
@@ -93,11 +93,13 @@ use yii\helpers\StringHelper;
  *
  * For more details and usage information on Component, see the [guide article on components](guide:concept-components).
  *
- * @property-read Behavior[] $behaviors List of behaviors attached to this component. This property is
- * read-only.
+ * @property-read Behavior[] $behaviors List of behaviors attached to this component.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
+ *
+ * @phpstan-property-read Behavior<$this>[] $behaviors
+ * @psalm-property-read Behavior<$this>[] $behaviors
  */
 class Component extends BaseObject
 {
@@ -112,6 +114,8 @@ class Component extends BaseObject
     private $_eventWildcards = [];
     /**
      * @var Behavior[]|null the attached behaviors (behavior name => behavior). This is `null` when not initialized.
+     *
+     * @phpstan-var Behavior<$this>[]|null
      */
     private $_behaviors;
 
@@ -189,7 +193,19 @@ class Component extends BaseObject
         } elseif (strncmp($name, 'as ', 3) === 0) {
             // as behavior: attach behavior
             $name = trim(substr($name, 3));
-            $this->attachBehavior($name, $value instanceof Behavior ? $value : Yii::createObject($value));
+            if ($value instanceof Behavior) {
+                $this->attachBehavior($name, $value);
+            } elseif ($value instanceof \Closure) {
+                $this->attachBehavior($name, call_user_func($value));
+            } elseif (isset($value['__class']) && is_subclass_of($value['__class'], Behavior::class)) {
+                $this->attachBehavior($name, Yii::createObject($value));
+            } elseif (!isset($value['__class']) && isset($value['class']) && is_subclass_of($value['class'], Behavior::class)) {
+                $this->attachBehavior($name, Yii::createObject($value));
+            } elseif (is_string($value) && is_subclass_of($value, Behavior::class, true)) {
+                $this->attachBehavior($name, Yii::createObject($value));
+            } else {
+                throw new InvalidConfigException('Class is not of type ' . Behavior::class . ' or its subclasses');
+            }
 
             return;
         }
@@ -223,7 +239,7 @@ class Component extends BaseObject
      * will be implicitly called when executing `isset($component->property)`.
      * @param string $name the property name or the event name
      * @return bool whether the named property is set
-     * @see https://secure.php.net/manual/en/function.isset.php
+     * @see https://www.php.net/manual/en/function.isset.php
      */
     public function __isset($name)
     {
@@ -255,7 +271,7 @@ class Component extends BaseObject
      * will be implicitly called when executing `unset($component->property)`.
      * @param string $name the property name
      * @throws InvalidCallException if the property is read only.
-     * @see https://secure.php.net/manual/en/function.unset.php
+     * @see https://www.php.net/manual/en/function.unset.php
      */
     public function __unset($name)
     {
@@ -435,7 +451,7 @@ class Component extends BaseObject
      * indexed by behavior names. A behavior configuration can be either a string specifying
      * the behavior class or an array of the following structure:
      *
-     * ```php
+     * ```
      * 'behaviorName' => [
      *     'class' => 'BehaviorClass',
      *     'property1' => 'value1',
@@ -450,6 +466,9 @@ class Component extends BaseObject
      * Behaviors declared in this method will be attached to the component automatically (on demand).
      *
      * @return array the behavior configurations.
+     *
+     * @phpstan-return array<array-key, class-string|array{class: class-string, ...}>
+     * @psalm-return array<array-key, class-string|array{class: class-string, ...}>
      */
     public function behaviors()
     {
@@ -465,13 +484,17 @@ class Component extends BaseObject
     {
         $this->ensureBehaviors();
 
+        if (!empty($this->_events[$name])) {
+            return true;
+        }
+
         foreach ($this->_eventWildcards as $wildcard => $handlers) {
             if (!empty($handlers) && StringHelper::matchWildcard($wildcard, $name)) {
                 return true;
             }
         }
 
-        return !empty($this->_events[$name]) || Event::hasHandlers($this, $name);
+        return Event::hasHandlers($this, $name);
     }
 
     /**
@@ -497,7 +520,7 @@ class Component extends BaseObject
      *
      * Since 2.0.14 you can specify event name as a wildcard pattern:
      *
-     * ```php
+     * ```
      * $component->on('event.group.*', function ($event) {
      *     Yii::trace($event->name . ' is triggered.');
      * });
@@ -541,7 +564,7 @@ class Component extends BaseObject
      * wildcard will be removed, while handlers registered with plain names matching this wildcard will remain.
      *
      * @param string $name event name
-     * @param callable $handler the event handler to be removed.
+     * @param callable|null $handler the event handler to be removed.
      * If it is null, all handlers attached to the named event will be removed.
      * @return bool if a handler is found and detached
      * @see on()
@@ -594,27 +617,29 @@ class Component extends BaseObject
 
     /**
      * Triggers an event.
-     * This method represents the happening of an event. It invokes
-     * all attached handlers for the event including class-level handlers.
+     *
+     * This method represents the happening of an event. It invokes all attached handlers for the event
+     * including class-level handlers.
+     *
      * @param string $name the event name
-     * @param Event $event the event parameter. If not set, a default [[Event]] object will be created.
+     * @param Event|null $event the event instance. If not set, a default [[Event]] object will be created.
      */
-    public function trigger($name, Event $event = null)
+    public function trigger($name, ?Event $event = null)
     {
         $this->ensureBehaviors();
 
         $eventHandlers = [];
         foreach ($this->_eventWildcards as $wildcard => $handlers) {
             if (StringHelper::matchWildcard($wildcard, $name)) {
-                $eventHandlers = array_merge($eventHandlers, $handlers);
+                $eventHandlers[] = $handlers;
             }
         }
-
         if (!empty($this->_events[$name])) {
-            $eventHandlers = array_merge($eventHandlers, $this->_events[$name]);
+            $eventHandlers[] = $this->_events[$name];
         }
 
         if (!empty($eventHandlers)) {
+            $eventHandlers = call_user_func_array('array_merge', $eventHandlers);
             if ($event === null) {
                 $event = new Event();
             }
@@ -640,7 +665,10 @@ class Component extends BaseObject
     /**
      * Returns the named behavior object.
      * @param string $name the behavior name
-     * @return null|Behavior the behavior object, or null if the behavior does not exist
+     * @return Behavior|null the behavior object, or null if the behavior does not exist
+     *
+     * @phpstan-return Behavior<$this>|null
+     * @psalm-return Behavior<$this>|null
      */
     public function getBehavior($name)
     {
@@ -651,6 +679,9 @@ class Component extends BaseObject
     /**
      * Returns all behaviors attached to this component.
      * @return Behavior[] list of behaviors attached to this component
+     *
+     * @phpstan-return Behavior<$this>[]
+     * @psalm-return Behavior<$this>[]
      */
     public function getBehaviors()
     {
@@ -672,6 +703,12 @@ class Component extends BaseObject
      *
      * @return Behavior the behavior object
      * @see detachBehavior()
+     *
+     * @phpstan-param string|array|Behavior<$this> $behavior
+     * @psalm-param string|array|Behavior<$this> $behavior
+     *
+     * @phpstan-return Behavior<$this>
+     * @psalm-return Behavior<$this>
      */
     public function attachBehavior($name, $behavior)
     {
@@ -698,7 +735,10 @@ class Component extends BaseObject
      * Detaches a behavior from the component.
      * The behavior's [[Behavior::detach()]] method will be invoked.
      * @param string $name the behavior's name.
-     * @return null|Behavior the detached behavior. Null if the behavior does not exist.
+     * @return Behavior|null the detached behavior. Null if the behavior does not exist.
+     *
+     * @phpstan-return Behavior<$this>|null
+     * @psalm-return Behavior<$this>|null
      */
     public function detachBehavior($name)
     {
@@ -744,6 +784,10 @@ class Component extends BaseObject
      * will be detached first.
      * @param string|array|Behavior $behavior the behavior to be attached
      * @return Behavior the attached behavior.
+     *
+     * @phpstan-param string|array|Behavior<$this> $behavior
+     *
+     * @phpstan-return Behavior<$this>
      */
     private function attachBehaviorInternal($name, $behavior)
     {

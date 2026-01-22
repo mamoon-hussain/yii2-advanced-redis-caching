@@ -13,9 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 setViewParam('liActive', 'category');
 ?>
 
-    <div class="category-index">
-        <div class="panel panel-default">
-            <div class="panel-body">
+<div class="category-index">
+    <div class="panel panel-default">
+        <div class="panel-body">
 
 
             <p>

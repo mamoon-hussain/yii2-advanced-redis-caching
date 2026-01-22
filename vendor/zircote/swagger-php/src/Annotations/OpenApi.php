@@ -6,75 +6,83 @@
 
 namespace OpenApi\Annotations;
 
-use Exception;
 use OpenApi\Analysis;
-use OpenApi\Logger;
+use OpenApi\Generator;
+use OpenApi\OpenApiException;
+use OpenApi\Util;
 
 /**
- * @Annotation
  * This is the root document object for the API specification.
  *
- * A  "OpenApi Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object
+ * @see [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
+ *
+ * @Annotation
  */
 class OpenApi extends AbstractAnnotation
 {
+    public const VERSION_3_0_0 = '3.0.0';
+    public const VERSION_3_1_0 = '3.1.0';
+    public const DEFAULT_VERSION = self::VERSION_3_0_0;
+    public const SUPPORTED_VERSIONS = [self::VERSION_3_0_0, self::VERSION_3_1_0];
+
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
+     *
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
-     * This is not related to the API info.version string.
+     *
+     * A version specified via `Generator::setVersion()` will overwrite this value.
+     *
+     * This is not related to the API info::version string.
      *
      * @var string
      */
-    public $openapi = '3.0.0';
+    public $openapi = self::DEFAULT_VERSION;
 
     /**
      * Provides metadata about the API. The metadata may be used by tooling as required.
      *
      * @var Info
      */
-    public $info = UNDEFINED;
+    public $info = Generator::UNDEFINED;
 
     /**
-     * An array of Server Objects, which provide connectivity information to a target server.
-     * If the servers property is not provided, or is an empty array, the default value would be a Server Object with a url value of /.
+     * An array of <code>@Server</code> objects, which provide connectivity information to a target server.
+     *
+     * If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.
      *
      * @var Server[]
      */
-    public $servers = UNDEFINED;
+    public $servers = Generator::UNDEFINED;
 
     /**
      * The available paths and operations for the API.
      *
      * @var PathItem[]
      */
-    public $paths = UNDEFINED;
+    public $paths = Generator::UNDEFINED;
 
     /**
      * An element to hold various components for the specification.
      *
      * @var Components
      */
-    public $components = UNDEFINED;
-
+    public $components = Generator::UNDEFINED;
 
     /**
-     * Lists the required security schemes to execute this operation.
-     * The name used for each property must correspond to a security scheme declared
-     * in the Security Schemes under the Components Object.
-     * Security Requirement Objects that contain multiple schemes require that
-     * all schemes must be satisfied for a request to be authorized.
-     * This enables support for scenarios where multiple query parameters or
-     * HTTP headers are required to convey security information.
-     * When a list of Security Requirement Objects is defined on the Open API object or
-     * Operation Object, only one of Security Requirement Objects in the list needs to
-     * be satisfied to authorize the request.
+     * A declaration of which security mechanisms can be used across the API.
+     *
+     * The list of values includes alternative security requirement objects that can be used.
+     * Only one of the security requirement objects need to be satisfied to authorize a request.
+     * Individual operations can override this definition.
+     * To make security optional, an empty security requirement `({})` can be included in the array.
      *
      * @var array
      */
-    public $security = UNDEFINED;
+    public $security = Generator::UNDEFINED;
 
     /**
      * A list of tags used by the specification with additional metadata.
+     *
      * The order of the tags can be used to reflect on their order by the parsing tools.
      * Not all tags that are used by the Operation Object must be declared.
      * The tags that are not declared may be organized randomly or based on the tools' logic.
@@ -82,40 +90,44 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Tag[]
      */
-    public $tags = UNDEFINED;
+    public $tags = Generator::UNDEFINED;
 
     /**
      * Additional external documentation.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs = UNDEFINED;
+    public $externalDocs = Generator::UNDEFINED;
+
+    /**
+     * The available webhooks for the API.
+     *
+     * @var Webhook[]
+     */
+    public $webhooks = Generator::UNDEFINED;
 
     /**
      * @var Analysis
      */
-    public $_analysis = UNDEFINED;
+    public $_analysis = Generator::UNDEFINED;
 
     /**
      * @inheritdoc
      */
-    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
-
-    /**
-     * @inheritdoc
-     */
-    public static $_required = ['openapi', 'info', 'paths'];
+    public static $_required = ['openapi', 'info'];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Info' => 'info',
-        'OpenApi\Annotations\Server' => ['servers'],
-        'OpenApi\Annotations\PathItem' => ['paths', 'path'],
-        'OpenApi\Annotations\Components' => 'components',
-        'OpenApi\Annotations\Tag' => ['tags'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
+        Info::class => 'info',
+        Server::class => ['servers'],
+        PathItem::class => ['paths', 'path'],
+        Components::class => 'components',
+        Tag::class => ['tags'],
+        ExternalDocumentation::class => 'externalDocs',
+        Webhook::class => ['webhooks', 'webhook'],
+        Attachable::class => ['attachables'],
     ];
 
     /**
@@ -126,60 +138,79 @@ class OpenApi extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate($parents = null, $skip = null, $ref = null)
+    public function validate(?array $stack = null, ?array $skip = null, string $ref = '', $context = null): bool
     {
-        if ($parents !== null || $skip !== null || $ref !== null) {
-            Logger::notice('Nested validation for '.$this->identity().' not allowed');
+        if ($stack !== null || $skip !== null || $ref !== '') {
+            $this->_context->logger->warning('Nested validation for ' . $this->identity() . ' not allowed');
+
             return false;
         }
-        return parent::validate([], [], '#');
+
+        if (!in_array($this->openapi, self::SUPPORTED_VERSIONS)) {
+            $this->_context->logger->warning('Unsupported OpenAPI version "' . $this->openapi . '". Allowed versions are: ' . implode(', ', self::SUPPORTED_VERSIONS));
+
+            return false;
+        }
+
+        /* paths is optional in 3.1.0 */
+        if ($this->openapi === self::VERSION_3_0_0 && Generator::isDefault($this->paths)) {
+            $this->_context->logger->warning('Required @OA\PathItem() not found');
+        }
+
+        if ($this->openapi === self::VERSION_3_1_0
+            && Generator::isDefault($this->paths)
+            && Generator::isDefault($this->webhooks)
+            && Generator::isDefault($this->components)
+        ) {
+            $this->_context->logger->warning("At least one of 'Required @OA\PathItem(), @OA\Components() or @OA\Webhook() not found'");
+
+            return false;
+        }
+
+        return parent::validate([], [], '#', new \stdClass());
     }
+
     /**
      * Save the OpenAPI documentation to a file.
-     *
-     * @param  string $filename
-     * @throws Exception
      */
-    public function saveAs($filename, $format = 'auto')
+    public function saveAs(string $filename, string $format = 'auto'): void
     {
-
         if ($format === 'auto') {
-            $format =   strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
+            $format = strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
         }
+
         if (strtolower($format) === 'json') {
             $content = $this->toJson();
         } else {
             $content = $this->toYaml();
         }
+
         if (file_put_contents($filename, $content) === false) {
-            throw new Exception('Failed to saveAs("' . $filename . '", "'.$format.'")');
+            throw new OpenApiException('Failed to saveAs("' . $filename . '", "' . $format . '")');
         }
     }
 
     /**
      * Look up an annotation with a $ref url.
      *
-     * @param  string $ref The $ref value, for example: "#/components/schemas/Product"
-     * @throws Exception
+     * @param string $ref The $ref value, for example: "#/components/schemas/Product"
      */
-    public function ref($ref)
+    public function ref(string $ref)
     {
         if (substr($ref, 0, 2) !== '#/') {
             // @todo Add support for external (http) refs?
-            throw new Exception('Unsupported $ref "' . $ref . '", it should start with "#/"');
+            throw new OpenApiException('Unsupported $ref "' . $ref . '", it should start with "#/"');
         }
+
         return $this->resolveRef($ref, '#/', $this, []);
     }
 
     /**
-     * Recursive helper for ref()
+     * Recursive helper for ref().
      *
-     * @param string $prefix    The resolved path of the ref.
-     * @param string $path      A partial ref
-     * @param *      $container the container to resolve the ref in.
-     * @param Array  $mapping
+     * @param array|AbstractAnnotation $container
      */
-    private static function resolveRef($ref, $resolved, $container, $mapping)
+    private static function resolveRef(string $ref, string $resolved, $container, array $mapping)
     {
         if ($ref === $resolved) {
             return $container;
@@ -188,68 +219,54 @@ class OpenApi extends AbstractAnnotation
         $slash = strpos($path, '/');
 
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
-        $property = self::unescapeRef($subpath);
+        $property = Util::refDecode($subpath);
         $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
 
         if (is_object($container)) {
             if (property_exists($container, $property) === false) {
-                throw new Exception('$ref "' . $ref . '" not found');
+                throw new OpenApiException('$ref "' . $ref . '" not found');
             }
             if ($slash === false) {
-                return $container->$property;
+                return $container->{$property};
             }
             $mapping = [];
             if ($container instanceof AbstractAnnotation) {
-                foreach ($container::$_nested as $className => $nested) {
+                foreach ($container::$_nested as $nestedClass => $nested) {
                     if (is_string($nested) === false && count($nested) === 2 && $nested[0] === $property) {
-                        $mapping[$className] = $nested[1];
+                        $mapping[$nestedClass] = $nested[1];
                     }
                 }
             }
-            return self::resolveRef($ref, $unresolved, $container->$property, $mapping);
+
+            return self::resolveRef($ref, $unresolved, $container->{$property}, $mapping);
         } elseif (is_array($container)) {
             if (array_key_exists($property, $container)) {
                 return self::resolveRef($ref, $unresolved, $container[$property], []);
             }
-            foreach ($mapping as $className => $keyField) {
+            foreach ($mapping as $nestedClass => $keyField) {
                 foreach ($container as $key => $item) {
-                    if (is_numeric($key) && is_object($item) && $item instanceof $className && (string) $item->$keyField === $property) {
+                    if (is_numeric($key) && is_object($item) && $item instanceof $nestedClass && (string) $item->{$keyField} === $property) {
                         return self::resolveRef($ref, $unresolved, $item, []);
                     }
                 }
             }
         }
-        throw new Exception('$ref "' . $unresolved . '" not found');
+
+        throw new OpenApiException('$ref "' . $unresolved . '" not found');
     }
 
     /**
-     * Decode the $ref escape characters.
-     *
-     * https://swagger.io/docs/specification/using-ref/
-     * https://tools.ietf.org/html/rfc6901#page-3
+     * @inheritdoc
      */
-    private static function unescapeRef($encoded)
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
-        $decoded = '';
-        $length = strlen($encoded);
-        for ($i = 0; $i < $length; $i++) {
-            $char = $encoded[$i];
-            if ($char === '~' && $i !== $length - 1) {
-                $next = $encoded[$i + 1];
-                if ($next === '0') { // escaped `~`
-                    $decoded .= '~';
-                    $i++;
-                } elseif ($next === '1') { // escaped `/`
-                    $decoded .= '/';
-                    $i++;
-                } else {
-                    // this ~ had special meaning :-(
-                    $decoded .= $char;
-                }
-            } else {
-                $decoded .= $char;
-            }
+        $data = parent::jsonSerialize();
+
+        if (!$this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+            unset($data->webhooks);
         }
-        return $decoded;
+
+        return $data;
     }
 }

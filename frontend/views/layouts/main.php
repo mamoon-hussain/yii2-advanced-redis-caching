@@ -1,8 +1,8 @@
 <?php
 use frontend\assets\DashboardAsset;
-use frontend\assets\CookiesAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\models\AppInfo;
 
 $liActive = viewParam('liActive', '');
 $liinActive = viewParam('liinActive', '');
@@ -64,43 +64,49 @@ DashboardAsset::register($this);
                                 <?= t('Home')?>
                             </a>
                         </li>
-                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
-                                                href="<?= Yii::$app->urlManager->createUrl("/site/about") ?>">
-                                <?= t('About')?>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"-->
+<!--                                                href="--><?php //= Yii::$app->urlManager->createUrl("/site/about") ?><!--">-->
+<!--                                --><?php //= t('About')?>
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link link text-black text-primary display-4"-->
+<!--                               href="--><?php //= Yii::$app->urlManager->createUrl("/paintings/index") ?><!--">-->
+<!--                                --><?php //= t('Art Works')?>
+<!--                                <br>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"-->
+<!--                                                href="--><?php //= Yii::$app->urlManager->createUrl("/tools/index") ?><!--">-->
+<!--                                --><?php //= t('Art Tools')?>
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"-->
+<!--                                                href="--><?php //= Yii::$app->urlManager->createUrl("/courses/index") ?><!--">-->
+<!--                                --><?php //= t('Art Training')?>
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"-->
+<!--                                                href="--><?php //= Yii::$app->urlManager->createUrl("/packages/index") ?><!--">-->
+<!--                                --><?php //= t('Art Tables')?>
+<!--                            </a>-->
+<!--                        </li>-->
                         <li class="nav-item">
                             <a class="nav-link link text-black text-primary display-4"
-                               href="<?= Yii::$app->urlManager->createUrl("/paintings/index") ?>">
-                                <?= t('Art Works')?>
-                                <br>
+                               href="<?= Yii::$app->urlManager->createUrl("/post/index") ?>">
+                                <?= t('Posts')?>
                             </a>
                         </li>
-                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
-                                                href="<?= Yii::$app->urlManager->createUrl("/tools/index") ?>">
-                                <?= t('Art Tools')?>
-                            </a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
-                                                href="<?= Yii::$app->urlManager->createUrl("/courses/index") ?>">
-                                <?= t('Art Training')?>
-                            </a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
-                                                href="<?= Yii::$app->urlManager->createUrl("/packages/index") ?>">
-                                <?= t('Art Tables')?>
-                            </a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
-                                                href="<?= Yii::$app->urlManager->createUrl("/halls/index") ?>">
-                                <?= t('Art Classes')?>
-                            </a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
-                                                href="<?= Yii::$app->urlManager->createUrl("/contact-us") ?>">
-                                <?= t('Contact Us')?>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"-->
+<!--                                                href="--><?php //= Yii::$app->urlManager->createUrl("/halls/index") ?><!--">-->
+<!--                                --><?php //= t('Art Classes')?>
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item"><a class="nav-link link text-black text-primary display-4"-->
+<!--                                                href="--><?php //= Yii::$app->urlManager->createUrl("/contact-us") ?><!--">-->
+<!--                                --><?php //= t('Contact Us')?>
+<!--                            </a>-->
+<!--                        </li>-->
 
                         <?php if (!Yii::$app->user->isGuest) { ?>
                             <li class="nav-item"><a class="nav-link link text-black text-primary display-4"
@@ -144,7 +150,7 @@ DashboardAsset::register($this);
     <?= $content ?>
 
     <?php
-    $app = \common\models\AppInfo::find()->one();
+    $app = AppInfo::find()->one();
     ?>
 
     <section class="footer3 cid-si3niDrJAs" once="footers" id="footer3-c">

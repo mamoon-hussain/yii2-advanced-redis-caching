@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\authclient;
@@ -10,18 +10,19 @@ namespace yii\authclient;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use Yii;
+use yii\helpers\Inflector;
 use yii\httpclient\Request;
 
 /**
  * BaseOAuth is a base class for the OAuth clients.
  *
- * @see http://oauth.net/
+ * @see https://oauth.net/
  *
  * @property OAuthToken $accessToken Auth token instance. Note that the type of this property differs in
- * getter and setter. See [[getAccessToken()]]  and [[setAccessToken()]] for details.
+ * getter and setter. See [[getAccessToken()]] and [[setAccessToken()]] for details.
  * @property string $returnUrl Return URL.
  * @property signature\BaseMethod $signatureMethod Signature method instance. Note that the type of this
- * property differs in getter and setter. See [[getSignatureMethod()]]  and [[setSignatureMethod()]] for details.
+ * property differs in getter and setter. See [[getSignatureMethod()]] and [[setSignatureMethod()]] for details.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
@@ -187,7 +188,7 @@ abstract class BaseOAuth extends BaseClient
     protected function defaultRequestOptions()
     {
         return [
-            'userAgent' => Yii::$app->name . ' OAuth ' . $this->version . ' Client',
+            'userAgent' => Inflector::slug(Yii::$app->name) . ' OAuth ' . $this->version . ' Client',
             'timeout' => 30,
         ];
     }
@@ -221,8 +222,10 @@ abstract class BaseOAuth extends BaseClient
     /**
      * Sends the given HTTP request, returning response data.
      * @param \yii\httpclient\Request $request HTTP request to be sent.
-     * @return array response data.
-     * @throws InvalidResponseException on invalid remote response.
+     * @return array|string|null response data.
+     * @throws ClientErrorResponseException on client error response codes.
+     * @throws InvalidResponseException on non-successful (other than client error) response codes.
+     * @throws \yii\httpclient\Exception
      * @since 2.1
      */
     protected function sendRequest($request)
@@ -230,10 +233,24 @@ abstract class BaseOAuth extends BaseClient
         $response = $request->send();
 
         if (!$response->getIsOk()) {
-            throw new InvalidResponseException($response, 'Request failed with code: ' . $response->getStatusCode() . ', message: ' . $response->getContent());
+            $statusCode = (int)$response->getStatusCode();
+            if ($statusCode >= 400 && $statusCode < 500) {
+                $exceptionClass = 'yii\\authclient\\ClientErrorResponseException';
+            } else {
+                $exceptionClass = 'yii\\authclient\\InvalidResponseException';
+            }
+            throw new $exceptionClass(
+                $response,
+                'Request failed with code: ' . $statusCode . ', message: ' . $response->getContent(),
+                $statusCode
+            );
         }
 
-        return $response->getData();
+        if (stripos($response->headers->get('content-type', ''), 'application/jwt') !== false) {
+            return $response->getContent();
+        } else {
+            return $response->getData();
+        }
     }
 
     /**
@@ -319,7 +336,7 @@ abstract class BaseOAuth extends BaseClient
      * Performs request to the OAuth API returning response data.
      * You may use [[createApiRequest()]] method instead, gaining more control over request execution.
      * @see createApiRequest()
-     * @param string $apiSubUrl API sub URL, which will be append to [[apiBaseUrl]], or absolute API URL.
+     * @param string|array $apiSubUrl API sub URL, which will be append to [[apiBaseUrl]], or absolute API URL.
      * @param string $method request method.
      * @param array|string $data request data or content.
      * @param array $headers additional request headers.

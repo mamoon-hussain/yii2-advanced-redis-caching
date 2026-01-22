@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\authclient;
@@ -14,11 +14,11 @@ use yii\helpers\ArrayHelper;
  * Token represents OAuth token.
  *
  * @property int $expireDuration Token expiration duration. Note that the type of this property differs in
- * getter and setter. See [[getExpireDuration()]]  and [[setExpireDuration()]] for details.
+ * getter and setter. See [[getExpireDuration()]] and [[setExpireDuration()]] for details.
  * @property string $expireDurationParamKey Expire duration param key.
- * @property-read bool $isExpired Is token expired. This property is read-only.
- * @property-read bool $isValid Is token valid. This property is read-only.
- * @property-read array $params This property is read-only.
+ * @property-read bool $isExpired Is token expired.
+ * @property-read bool $isValid Is token valid.
+ * @property-read array $params
  * @property string $token Token value.
  * @property string $tokenSecret Token secret value.
  *

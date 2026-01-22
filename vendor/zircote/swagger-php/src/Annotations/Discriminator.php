@@ -6,31 +6,35 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
- * @Annotation
  * The discriminator is a specific object in a schema which is used to inform the consumer of
  * the specification of an alternative schema based on the value associated with it.
+ *
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * A "Discriminator Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#discriminatorObject
- * JSON Schema: http://json-schema.org/
+ * @see [OAI Discriminator Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject)
+ * @see [JSON Schema](http://json-schema.org/)
+ *
+ * @Annotation
  */
 class Discriminator extends AbstractAnnotation
 {
     /**
-     * The name of the property in the payload that will hold the discriminator value
+     * The name of the property in the payload that will hold the discriminator value.
      *
      * @var string
      */
-    public $propertyName = UNDEFINED;
+    public $propertyName = Generator::UNDEFINED;
 
     /**
-     * An object to hold mappings between payload values and schema names or references
+     * An object to hold mappings between payload values and schema names or references.
      *
      * @var string[]
      */
-    public $mapping = UNDEFINED;
+    public $mapping = Generator::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -48,8 +52,18 @@ class Discriminator extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Schema',
-        'OpenApi\Annotations\Property',
-        'OpenApi\Annotations\Items',
+        Schema::class,
+        Property::class,
+        AdditionalProperties::class,
+        Items::class,
+        JsonContent::class,
+        XmlContent::class,
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
     ];
 }

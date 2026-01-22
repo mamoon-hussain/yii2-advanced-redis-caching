@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\authclient\widgets;
@@ -21,7 +21,7 @@ use yii\web\View;
  * @see https://developers.google.com/+/web/signin/
  *
  * @property string $callback Callback JavaScript function name. Note that the type of this property differs
- * in getter and setter. See [[getCallback()]]  and [[setCallback()]] for details.
+ * in getter and setter. See [[getCallback()]] and [[setCallback()]] for details.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0.4

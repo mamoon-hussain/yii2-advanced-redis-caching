@@ -52,9 +52,6 @@ use yii\authclient\widgets\AuthChoice;
                         )
                         ?>
 
-
-
-
                         <?php ActiveForm::end() ?>
 
                         <?php

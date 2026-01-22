@@ -6,19 +6,17 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Annotations as OA;
+
 /**
- * @Annotation
  * Shorthand for a xml response.
  *
- * Use as an Schema inside a Response and the MediaType "application/xml" will be generated.
+ * Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/xml'` will be generated.
+ *
+ * @Annotation
  */
 class XmlContent extends Schema
 {
-    /**
-     * @var object
-     */
-    public $examples = UNDEFINED;
-
     /**
      * @inheritdoc
      */
@@ -28,9 +26,13 @@ class XmlContent extends Schema
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Items' => 'items',
-        'OpenApi\Annotations\Property' => ['properties', 'property'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Xml' => 'xml',
+        Discriminator::class => 'discriminator',
+        Items::class => 'items',
+        Property::class => ['properties', 'property'],
+        ExternalDocumentation::class => 'externalDocs',
+        Xml::class => 'xml',
+        AdditionalProperties::class => 'additionalProperties',
+        Examples::class => ['examples', 'example'],
+        Attachable::class => ['attachables'],
     ];
 }

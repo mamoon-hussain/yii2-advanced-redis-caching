@@ -91,13 +91,13 @@ $this->params['breadcrumbs'][] = $this->title;
 //						'visible'=>User::hasPermission('viewUserEmail'),
 //					],
 					[
-						'attribute'=>'gridRoleSearch',
-						'filter'=>ArrayHelper::map(Role::getAvailableRoles(Yii::$app->user->isSuperAdmin),'name', 'description'),
-						'value'=>function(User $model){
+						'attribute' => 'gridRoleSearch',
+						'filter' => ArrayHelper::map(Role::getAvailableRoles(Yii::$app->user->isSuperAdmin),'name', 'description'),
+						'value' => function(User $model){
 								return implode(', ', ArrayHelper::map($model->roles, 'name', 'description'));
 							},
-						'format'=>'raw',
-						'visible'=>User::hasPermission('viewUserRoles'),
+						'format' => 'raw',
+						'visible' => User::hasPermission('viewUserRoles'),
 					],
 //					[
 //						'attribute'=>'registration_ip',

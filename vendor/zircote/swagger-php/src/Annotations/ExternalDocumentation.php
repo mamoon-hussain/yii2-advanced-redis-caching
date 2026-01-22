@@ -6,11 +6,14 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
- * @Annotation
  * Allows referencing an external resource for extended documentation.
  *
- * A "External Documentation Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
+ * @see [OAI External Documentation Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object)
+ *
+ * @Annotation
  */
 class ExternalDocumentation extends AbstractAnnotation
 {
@@ -19,14 +22,14 @@ class ExternalDocumentation extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = UNDEFINED;
+    public $description = Generator::UNDEFINED;
 
     /**
      * The URL for the target documentation.
      *
      * @var string
      */
-    public $url = UNDEFINED;
+    public $url = Generator::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -45,22 +48,29 @@ class ExternalDocumentation extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi',
-        'OpenApi\Annotations\Tag',
-        'OpenApi\Annotations\Schema',
-        'OpenApi\Annotations\AdditionalProperties',
-        'OpenApi\Annotations\Property',
-        'OpenApi\Annotations\Operation',
-        'OpenApi\Annotations\Get',
-        'OpenApi\Annotations\Post',
-        'OpenApi\Annotations\Put',
-        'OpenApi\Annotations\Delete',
-        'OpenApi\Annotations\Patch',
-        'OpenApi\Annotations\Head',
-        'OpenApi\Annotations\Options',
-        'OpenApi\Annotations\Trace',
-        'OpenApi\Annotations\Items',
-        'OpenApi\Annotations\JsonContent',
-        'OpenApi\Annotations\XmlContent',
+        OpenApi::class,
+        Tag::class,
+        Schema::class,
+        AdditionalProperties::class,
+        Property::class,
+        Operation::class,
+        Get::class,
+        Post::class,
+        Put::class,
+        Delete::class,
+        Patch::class,
+        Head::class,
+        Options::class,
+        Trace::class,
+        Items::class,
+        JsonContent::class,
+        XmlContent::class,
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
     ];
 }

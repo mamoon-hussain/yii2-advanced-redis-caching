@@ -7,7 +7,7 @@ use common\models\Product;
 use Yii;
 
 
-class Category extends \common\models\generated\Category
+class Category extends generated\Category
 {
     public $imagesFile;
     const image_directory = 'category_images';
@@ -128,6 +128,4 @@ class Category extends \common\models\generated\Category
     {
         return $this->hasMany(Product::className(), ['category_id' => 'id']);
     }
-
-
 }

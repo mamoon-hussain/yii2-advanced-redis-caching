@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\debug\panels;
@@ -19,7 +19,7 @@ use yii\log\Logger;
  * RouterPanel provides a panel which displays information about routing process.
  *
  * @property array $categories Note that the type of this property differs in getter and setter. See
- * [[getCategories()]]  and [[setCategories()]] for details.
+ * [[getCategories()]] and [[setCategories()]] for details.
  *
  * @author Dmitriy Bashkarev <dmitriy@bashkarev.com>
  * @since 2.0.8

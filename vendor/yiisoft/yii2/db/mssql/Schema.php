@@ -1,12 +1,13 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\db\mssql;
 
+use Yii;
 use yii\db\CheckConstraint;
 use yii\db\Constraint;
 use yii\db\ConstraintFinderInterface;
@@ -16,14 +17,18 @@ use yii\db\ForeignKeyConstraint;
 use yii\db\IndexConstraint;
 use yii\db\ViewFinderTrait;
 use yii\helpers\ArrayHelper;
+use yii\db\Schema as BaseSchema;
 
 /**
  * Schema is the class for retrieving metadata from MS SQL Server databases (version 2008 and above).
  *
  * @author Timur Ruziev <resurtm@gmail.com>
  * @since 2.0
+ *
+ * @template T of ColumnSchema
+ * @extends BaseSchema<T>
  */
-class Schema extends \yii\db\Schema implements ConstraintFinderInterface
+class Schema extends BaseSchema implements ConstraintFinderInterface
 {
     use ViewFinderTrait;
     use ConstraintFinderTrait;
@@ -331,7 +336,7 @@ SQL;
      */
     public function createQueryBuilder()
     {
-        return new QueryBuilder($this->db);
+        return Yii::createObject(QueryBuilder::className(), [$this->db]);
     }
 
     /**
@@ -371,9 +376,13 @@ SQL;
      * Loads the column information into a [[ColumnSchema]] object.
      * @param array $info column information
      * @return ColumnSchema the column schema object
+     *
+     * @phpstan-return T
+     * @psalm-return T
      */
     protected function loadColumnSchema($info)
     {
+        $isVersion2017orLater = version_compare($this->db->getSchema()->getServerVersion(), '14', '>=');
         $column = $this->createColumnSchema();
 
         $column->name = $info['column_name'];
@@ -392,19 +401,28 @@ SQL;
             if (isset($this->typeMap[$type])) {
                 $column->type = $this->typeMap[$type];
             }
+
+            if ($isVersion2017orLater && $type === 'bit') {
+                $column->type = 'boolean';
+            }
+
             if (!empty($matches[2])) {
                 $values = explode(',', $matches[2]);
-                $column->size = $column->precision = (int)$values[0];
+                $column->size = $column->precision = (int) $values[0];
+
                 if (isset($values[1])) {
-                    $column->scale = (int)$values[1];
+                    $column->scale = (int) $values[1];
                 }
-                if ($column->size === 1 && ($type === 'tinyint' || $type === 'bit')) {
-                    $column->type = 'boolean';
-                } elseif ($type === 'bit') {
-                    if ($column->size > 32) {
-                        $column->type = 'bigint';
-                    } elseif ($column->size === 32) {
-                        $column->type = 'integer';
+
+                if ($isVersion2017orLater === false) {
+                    if ($column->size === 1 && ($type === 'tinyint' || $type === 'bit')) {
+                        $column->type = 'boolean';
+                    } elseif ($type === 'bit') {
+                        if ($column->size > 32) {
+                            $column->type = 'bigint';
+                        } elseif ($column->size === 32) {
+                            $column->type = 'integer';
+                        }
                     }
                 }
             }
@@ -430,7 +448,7 @@ SQL;
     protected function findColumns($table)
     {
         $columnsTableName = 'INFORMATION_SCHEMA.COLUMNS';
-        $whereSql = "[t1].[table_name] = " . $this->db->quoteValue($table->name);
+        $whereSql = '[t1].[table_name] = ' . $this->db->quoteValue($table->name);
         if ($table->catalogName !== null) {
             $columnsTableName = "{$table->catalogName}.{$columnsTableName}";
             $whereSql .= " AND [t1].[table_catalog] = '{$table->catalogName}'";
@@ -623,7 +641,7 @@ SQL;
      *
      * Each array element is of the following structure:
      *
-     * ```php
+     * ```
      * [
      *     'IndexName1' => ['col1' [, ...]],
      *     'IndexName2' => ['col2' [, ...]],
@@ -789,13 +807,12 @@ SQL;
         $tableSchema = $this->getTableSchema($table);
         $result = [];
         foreach ($tableSchema->primaryKey as $name) {
-            if ($tableSchema->columns[$name]->autoIncrement) {
-                $result[$name] = $this->getLastInsertID($tableSchema->sequenceName);
-                break;
-            }
             // @see https://github.com/yiisoft/yii2/issues/13828 & https://github.com/yiisoft/yii2/issues/17474
             if (isset($inserted[$name])) {
                 $result[$name] = $inserted[$name];
+            } elseif ($tableSchema->columns[$name]->autoIncrement) {
+                // for a version earlier than 2005
+                $result[$name] = $this->getLastInsertID($tableSchema->sequenceName);
             } elseif (isset($columns[$name])) {
                 $result[$name] = $columns[$name];
             } else {
@@ -804,5 +821,13 @@ SQL;
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createColumnSchemaBuilder($type, $length = null)
+    {
+        return Yii::createObject(ColumnSchemaBuilder::className(), [$type, $length, $this->db]);
     }
 }
