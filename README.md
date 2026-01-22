@@ -59,6 +59,15 @@ If you get errors about missing packages like QR code generator, run:
 
 composer require endroid/qr-code
 
+### 2. Create database
+mysql -u root -p -e "CREATE DATABASE painter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+
+# Import structure
+mysql -u root -p painter < database/structure.sql
+
+# Import sample data (optional)
+mysql -u root -p painter < database/sample_data.sql
+
 ### 3. Configure Static IP Address
 
 Update the file `config/params.php` with your machine’s local IP address so that the mobile devices on the same network can access your project:
